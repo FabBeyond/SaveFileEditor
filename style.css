@@ -112,3 +112,55 @@ body {
     background-color: #8d8988;
     transition: left 0.25s ease, width 0.25s ease;
 }
+
+.resources-title-icon {
+    height: 1.25em;
+    width: auto;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.resources-title {
+    margin-right: 30px;
+    color: #c0bdbc;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.resources-entry {
+    margin: 25px 0 0 30px;
+    display: flex;
+    align-items: center;
+}
+
+.resources-entry input {
+    padding-right: 10px;
+    height: 1.25em;
+    background-color: #101418;
+    border: 2px solid #1c2024;
+    border-radius: 5px;
+    color: #c0bdbc;
+    width: 100px;
+    text-align: right;
+    font-size: 20px;
+}
+
+.single-title {
+    margin: 10px;
+    color: #8d8988;
+}
+
+.image-showcase > img {
+    height: 3em;
+    margin-right: 10px;
+}
+
+.image-showcase button {
+    cursor: pointer;
+    margin-right: 10px;
+    background: none;
+    border: none;
+    color: #c0bdbc;
+    font-size: 30px;
+}

@@ -38,6 +38,63 @@
         <div class="inner-left">
             <div class="resources-container">
                 <div class="tab-switcher">
+                    <p class="single-title font">Resources</p>
+                </div>
+                <div class="resources-content">
+                    <div class="resources-entry">
+                        <div class="resources-title font">
+                            <img src="resources/rosaries.png" alt="rosaries" class="resources-title-icon">
+                            Rosaries
+                        </div>
+                        <input type="text" class="font">
+                    </div>
+                    <div class="resources-entry">
+                        <div class="resources-title font">
+                            <img src="resources/shell_shards.png" alt="shell_shards" class="resources-title-icon">
+                            Shell Shards
+                        </div>
+                        <input type="text" class="font">
+                    </div>
+                    <div class="resources-entry image-showcase masks">
+                        <div class="resources-title font">
+                            <img src="resources/mask_full.png" alt="mask_full" class="resources-title-icon">
+                            Mask Shards
+                        </div>
+                        <button class="font" onclick="change_masks(-1)">-</button>
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/mask0.png" alt="mask">
+                        <button class="font" onclick="change_masks(1)">+</button>
+                    </div>
+                    <div class="resources-entry image-showcase spools">
+                        <div class="resources-title font">
+                            <img src="resources/spool_fragment.png" alt="spool_fragment" class="resources-title-icon">
+                            Spool Fragments
+                        </div>
+                        <button class="font" onclick="change_spools(-1)">-</button>
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/spool0.png" alt="spool">
+                        <button class="font" onclick="change_spools(1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="misc-container">
+                <div class="tab-switcher">
                     <div class="tab-underline"></div>
                     <button class="tab-button font tab-button-selected" onclick="selectResourceTab(this)">Resources</button>
                     <button class="tab-button font" onclick="selectResourceTab(this)">Items</button>
@@ -45,13 +102,6 @@
                     <button class="tab-button font" onclick="selectResourceTab(this)">Bosses</button>
                     <button class="tab-button font" onclick="selectResourceTab(this)">Wishes</button>
                 </div>
-                <div class="resources-content">
-
-                </div>
-            </div>
-
-            <div class="misc-container">
-
             </div>
         </div>
         <div class="inner-right">
