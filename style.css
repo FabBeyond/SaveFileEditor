@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
 body {
   position: relative;
   min-height: 100vh;
@@ -13,4 +15,22 @@ body::before {
     filter: blur(8px);
     z-index: -1;
     transform: scale(1.05);
+}
+
+.title {
+    margin: 0;
+    font-family: "Cantarell";
+    font-size: 50px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+}
+
+.sub-title {
+    margin: 20px;
+    font-family: "Cantarell";
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
 }
