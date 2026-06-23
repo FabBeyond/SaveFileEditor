@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
     <title>Silksong Save File Editor</title>
 </head>
 <body>
@@ -14,12 +15,13 @@
             <p class="sub-title">Edit your save file to your liking</p>
         </div>
         <div class="top-buttons">
-            <button class="top-button">
+            <button class="top-button" onclick="openSaveFile()">
                 <p class="font">
                     <i class="fa-solid fa-folder"></i>
                     <span>Open Save File</span>
                 </p>
             </button>
+            <input type="file" id="fileinput" style="display: none;"/>
             <button class="top-button">
                 <p class="font">
                     <i class="fa-solid fa-floppy-disk"></i>
@@ -30,5 +32,7 @@
     </div>
     
     <div></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
