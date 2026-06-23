@@ -146,3 +146,9 @@ function change_spools(amount) {
 
     update_spools();
 }
+
+function on_shell_shard_change(obj) {
+    if (obj.value > player_data["ToolPouchUpgrades"] * 100 + 400) {
+        obj.value = player_data["ToolPouchUpgrades"] * 100 + 400;
+    }
+}
