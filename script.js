@@ -79,10 +79,10 @@ function update_masks() {
     for (let i = 0; i < images.length; i++) {
         const element = images[i];
         if (i+1 <= player_data["maxHealth"]) {
-            element.src = "resources/mask_full.png";
+            element.src = "resources/resources/mask_full.png";
         }
         else {
-            element.src = "resources/mask" + player_data["heartPieces"] + ".png"
+            element.src = "resources/resources/mask" + player_data["heartPieces"] + ".png"
             break;
         }
     }
@@ -92,10 +92,10 @@ function update_spools() {
     for (let i = 0; i < images.length; i++) {
         const element = images[i];
         if (i+1 <= player_data["silkMax"]-9) {
-            element.src = "resources/spool_full.png";
+            element.src = "resources/resources/spool_full.png";
         }
         else {
-            element.src = "resources/spool" + player_data["silkSpoolParts"] + ".png"
+            element.src = "resources/resources/spool" + player_data["silkSpoolParts"] + ".png"
             break;
         }
     }

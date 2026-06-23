@@ -12,7 +12,7 @@
     <div class="top-bar">
         <div>
             <div class="title">
-                <img src="resources/map_and_quill.png" alt="map_and_quill" class="title-icon">
+                <img src="resources/misc/map_and_quill.png" alt="map_and_quill" class="title-icon">
                 Save File Editor
             </div>
             <p class="sub-title">Upload and edit your save file to your liking</p>
@@ -43,14 +43,14 @@
                 <div class="resources-content">
                     <div class="resources-entry">
                         <div class="resources-title font">
-                            <img src="resources/rosaries.png" alt="rosaries" class="resources-title-icon">
+                            <img src="resources/resources/rosaries.png" alt="rosaries" class="resources-title-icon">
                             Rosaries
                         </div>
                         <input type="text" class="font">
                     </div>
                     <div class="resources-entry">
                         <div class="resources-title font">
-                            <img src="resources/shell_shards.png" alt="shell_shards" class="resources-title-icon">
+                            <img src="resources/resources/shell_shards.png" alt="shell_shards" class="resources-title-icon">
                             Shell Shards
                         </div>
                         <input type="text" class="font" onchange="on_shell_shard_change(this)">
@@ -58,37 +58,37 @@
                     </div>
                     <div class="resources-entry image-showcase masks">
                         <div class="resources-title font">
-                            <img src="resources/mask_full.png" alt="mask_full" class="resources-title-icon">
+                            <img src="resources/resources/mask_full.png" alt="resources/mask_full" class="resources-title-icon">
                             Mask Shards
                         </div>
                         <button class="font" onclick="change_masks(-1)">-</button>
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
-                        <img src="resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
+                        <img src="resources/resources/mask0.png" alt="mask">
                         <button class="font" onclick="change_masks(1)">+</button>
                     </div>
                     <div class="resources-entry image-showcase spools">
                         <div class="resources-title font">
-                            <img src="resources/spool_fragment.png" alt="spool_fragment" class="resources-title-icon">
+                            <img src="resources/resources/spool_fragment.png" alt="spool_fragment" class="resources-title-icon">
                             Spool Fragments
                         </div>
                         <button class="font" onclick="change_spools(-1)">-</button>
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
-                        <img src="resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
+                        <img src="resources/resources/spool0.png" alt="spool">
                         <button class="font" onclick="change_spools(1)">+</button>
                     </div>
                 </div>
@@ -97,12 +97,15 @@
             <div class="misc-container">
                 <div class="tab-switcher">
                     <div class="tab-underline"></div>
-                    <button class="tab-button font tab-button-selected" onclick="selectResourceTab(this)">Resources</button>
-                    <button class="tab-button font" onclick="selectResourceTab(this)">Items</button>
+                    <button class="tab-button font tab-button-selected" onclick="selectResourceTab(this)">Items</button>
                     <button class="tab-button font" onclick="selectResourceTab(this)">Abilities</button>
                     <button class="tab-button font" onclick="selectResourceTab(this)">Bosses</button>
                     <button class="tab-button font" onclick="selectResourceTab(this)">Wishes</button>
+                    <button class="tab-button font" onclick="selectResourceTab(this)">Collectables</button>
+                    <!-- <button class="tab-button font" onclick="selectResourceTab(this)">Hunters Journal</button> -->
                 </div>
+
+
             </div>
         </div>
         <div class="inner-right">
