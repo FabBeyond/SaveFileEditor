@@ -15,7 +15,7 @@
                 <img src="resources/map_and_quill.png" alt="map_and_quill" class="title-icon">
                 Save File Editor
             </div>
-            <p class="sub-title">Edit your save file to your liking</p>
+            <p class="sub-title">Upload and edit your save file to your liking</p>
         </div>
         <div class="top-buttons">
             <button class="top-button" onclick="openSaveFile()">
@@ -37,7 +37,17 @@
     <div class="outer-div">
         <div class="inner-left">
             <div class="resources-container">
+                <div class="tab-switcher">
+                    <div class="tab-underline"></div>
+                    <button class="tab-button font tab-button-selected" onclick="selectResourceTab(this)">Resources</button>
+                    <button class="tab-button font" onclick="selectResourceTab(this)">Items</button>
+                    <button class="tab-button font" onclick="selectResourceTab(this)">Abilities</button>
+                    <button class="tab-button font" onclick="selectResourceTab(this)">Bosses</button>
+                    <button class="tab-button font" onclick="selectResourceTab(this)">Wishes</button>
+                </div>
+                <div class="resources-content">
 
+                </div>
             </div>
 
             <div class="misc-container">

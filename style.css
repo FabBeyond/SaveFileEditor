@@ -86,3 +86,29 @@ body {
     border: 2px solid #1c2024;
     border-radius: 10px;
 }
+
+.tab-button {
+    background: none;
+    border: none;
+    color: #8d8988;
+    padding: 0;
+    margin: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+.tab-switcher {
+    display: flex;
+    position: relative;
+    border-bottom: 2px solid #1c2024;
+}
+
+.tab-underline {
+    position: absolute;
+    bottom: 10px;
+    height: 2px;
+    background-color: #8d8988;
+    transition: left 0.25s ease, width 0.25s ease;
+}

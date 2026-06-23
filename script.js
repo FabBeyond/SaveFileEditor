@@ -41,3 +41,16 @@ function decryptSaveFile(arrayBuffer) {
 
   return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 }
+
+function selectResourceTab(btn) {
+  document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('tab-button-selected'));
+  btn.classList.add('tab-button-selected');
+
+  const underline = document.querySelector('.tab-underline');
+  underline.style.left = btn.offsetLeft + 'px';
+  underline.style.width = btn.offsetWidth + 'px';
+}
+
+window.addEventListener('load', () => {
+  selectTab(document.querySelector('.tab-button-selected'));
+});
