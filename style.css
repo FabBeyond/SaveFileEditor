@@ -20,6 +20,11 @@ body {
     margin: 0;
     padding: 0;
 }
+.title-icon {
+    height: 1em;
+    width: auto;
+    display: inline-block;
+}
 
 .sub-title {
     color: #8d8988;
@@ -50,4 +55,34 @@ body {
 }
 .top-button * {
     font-size: 20px;
+}
+
+.outer-div {
+    margin-top: 40px;
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.inner-left {
+    display: flex;
+    height: 100%;
+    width: 80%;
+    margin-right: 20px;
+    flex-direction: column;
+}
+.inner-right {
+    display: flex;
+    height: 100%;
+    width: 50%;
+    flex-direction: column;
+}
+
+.resources-container, .misc-container {
+    width: 100%;
+    height: 50%;
+    background-color: #101418;
+    border: 2px solid #1c2024;
+    border-radius: 10px;
 }
