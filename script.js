@@ -67,6 +67,13 @@ function set_values() {
     update_spools();
 }
 
+function update_resources() {
+    const resources = document.querySelectorAll(".resources-entry input");
+    resources[0].value = player_data["geo"];
+    resources[1].value = player_data["ShellShards"];
+    document.querySelector(".shell-shards-cap").innerHTML = "/ " + (player_data["ToolPouchUpgrades"] * 100 + 400);
+}
+
 function update_masks() {
     const images = document.querySelectorAll(".masks > img");
     for (let i = 0; i < images.length; i++) {
@@ -80,7 +87,6 @@ function update_masks() {
         }
     }
 }
-
 function update_spools() {
     const images = document.querySelectorAll(".spools > img");
     for (let i = 0; i < images.length; i++) {
@@ -118,13 +124,6 @@ function change_masks(amount) {
 
     update_masks();
 }
-
-function update_resources() {
-    const resources = document.querySelectorAll(".resources-entry input");
-    resources[0].value = player_data["geo"];
-    resources[1].value = player_data["ShellShards"];
-}
-
 function change_spools(amount) {
     player_data["silkSpoolParts"] += amount;
     if (player_data["silkSpoolParts"] == 2) {
