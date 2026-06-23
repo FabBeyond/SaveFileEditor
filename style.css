@@ -1,36 +1,53 @@
-@import url("https://fonts.googleapis.com/css2?family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 body {
-  position: relative;
-  min-height: 100vh;
+    margin: 30px 100px 0 50px;
+    background-color: #0d1115;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image: url("backround.jpg");
-    background-size: cover;
-    background-position: center;
-    filter: blur(8px);
-    z-index: -1;
-    transform: scale(1.05);
+.font {
+    font-family: "Roboto";
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
 }
 
 .title {
-    margin: 0;
-    font-family: "Cantarell";
-    font-size: 50px;
+    color: #c0bdbc;
+    font-family: "Roboto";
     font-weight: bold;
-    color: #ffffff;
-    text-align: center;
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
 }
 
 .sub-title {
-    margin: 20px;
-    font-family: "Cantarell";
-    font-size: 15px;
+    color: #8d8988;
+    font-family: "Roboto";
     font-weight: bold;
-    color: #ffffff;
-    text-align: center;
+    font-size: 15px;
+    padding:  10px 0 0 0;
+    margin: 0;
+}
+
+.top-bar {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+}
+
+.top-button {
+    cursor: pointer;
+    background-color: #101418;
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px solid #1c2024;
+    padding: 0;
+    color: #c0bdbc;
+}
+.top-button * {
+    font-size: 20px;
 }
