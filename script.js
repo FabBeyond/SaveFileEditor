@@ -110,6 +110,7 @@ function set_values() {
     update_masks();
     update_spools();
     update_items();
+    update_abilities();
 }
 
 function update_resources() {
@@ -193,6 +194,19 @@ function update_items() {
 
     if (player_data["hasQuill"]) toggle_item(document.querySelector("img[alt='quill']"));
 }
+function update_abilities() {
+    console.log(document.querySelector("img[alt='swift_step']"));
+    if (player_data["hasDash"]) toggle_ability(document.querySelector("img[alt='swift_step']"));
+    if (player_data["hasBrolly"]) toggle_ability(document.querySelector("img[alt='drifters_cloak']"));
+    if (player_data["hasWalljump"]) toggle_ability(document.querySelector("img[alt='cling_grip']"));
+    if (player_data["hasNeedolin"]) toggle_ability(document.querySelector("img[alt='needolin']"));
+    if (player_data["hasChargeSlash"]) toggle_ability(document.querySelector("img[alt='needle_strike']"));
+    if (player_data["hasHarpoonDash"]) toggle_ability(document.querySelector("img[alt='clawline']"));
+    if (player_data["UnlockedFastTravelTeleport"]) toggle_ability(document.querySelector("img[alt='beastling_call']"));
+    if (player_data["hasNeedolinMemoryPowerup"]) toggle_ability(document.querySelector("img[alt='elegy']"));
+    if (player_data["hasSuperJump"]) toggle_ability(document.querySelector("img[alt='silksoar']"));
+    if (player_data["HasBoundCrestUpgrader"]) toggle_ability(document.querySelector("img[alt='sylphsong']"));
+}
 
 
 function change_masks(amount) {
@@ -247,6 +261,8 @@ function on_shell_shard_change(obj) {
 }
 
 function toggle_item(obj) {
+    if (obj == null) return;
+
     if (obj.style.webkitFilter == "grayscale(0)") {
         obj.style.webkitFilter = "grayscale(1)";
         obj.parentNode.style.backgroundColor = "#101418";
@@ -254,6 +270,18 @@ function toggle_item(obj) {
     else {
         obj.style.webkitFilter = "grayscale(0)";
         obj.parentNode.style.backgroundColor = "#474e55";
+    }
+}
+function toggle_ability(obj) {
+    if (obj == null) return;
+    
+    if (obj.style.webkitFilter == "grayscale(0)") {
+        obj.style.webkitFilter = "grayscale(1)";
+        obj.parentNode.parentNode.style.backgroundColor = "#101418";
+    }
+    else {
+        obj.style.webkitFilter = "grayscale(0)";
+        obj.parentNode.parentNode.style.backgroundColor = "#474e55";
     }
 }
 
@@ -366,20 +394,67 @@ function update_item(obj) {
     }
 }
 
-function switchTab(btn, path) {
-    if (btn != null) {
-        document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
-        btn.classList.add("tab-button-selected");
+function update_ability(obj) {
+    obj = obj.querySelector("img");
+    key = obj.alt;
 
-        const underline = document.querySelector(".tab-underline");
-        underline.style.left = btn.offsetLeft + "px";
-        underline.style.width = btn.offsetWidth + "px";
+    if (key == "swift_step") {
+        toggle_ability(obj);
+        player_data["hasDash"] = player_data["hasDash"] == true ? false : true;
     }
+    else if (key == "drifters_cloak") {
+        toggle_ability(obj);
+        player_data["hasBrolly"] = player_data["hasBrolly"] == true ? false : true;
+    }
+    else if (key == "cling_grip") {
+        toggle_ability(obj);
+        player_data["hasWalljump"] = player_data["hasWalljump"] == true ? false : true;
+    }
+    else if (key == "needolin") {
+        toggle_ability(obj);
+        player_data["hasNeedolin"] = player_data["hasNeedolin"] == true ? false : true;
+    }
+    else if (key == "needle_strike") {
+        toggle_ability(obj);
+        player_data["hasChargeSlash"] = player_data["hasChargeSlash"] == true ? false : true;
+    }
+    else if (key == "clawline") {
+        toggle_ability(obj);
+        player_data["hasHarpoonDash"] = player_data["hasHarpoonDash"] == true ? false : true;
+    }
+    else if (key == "beastling_call") {
+        toggle_ability(obj);
+        player_data["UnlockedFastTravelTeleport"] = player_data["UnlockedFastTravelTeleport"] == true ? false : true;
+    }
+    else if (key == "elegy") {
+        toggle_ability(obj);
+        player_data["hasNeedolinMemoryPowerup"] = player_data["hasNeedolinMemoryPowerup"] == true ? false : true;
+    }
+    else if (key == "silksoar") {
+        toggle_ability(obj);
+        player_data["hasSuperJump"] = player_data["hasSuperJump"] == true ? false : true;
+    }
+    else if (key == "sylphsong") {
+        toggle_ability(obj);
+        player_data["HasBoundCrestUpgrader"] = player_data["HasBoundCrestUpgrader"] == true ? false : true;
+    }
+}
+
+function switchTab(btn, path, reload_id) {
+    document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
+    btn.classList.add("tab-button-selected");
+
+    const underline = document.querySelector(".tab-underline");
+    underline.style.left = btn.offsetLeft + "px";
+    underline.style.width = btn.offsetWidth + "px";
 
     fetch("tabs/" + path + ".html")
         .then(res => res.text())
         .then(html => {
         document.querySelector(".misc-container-content").innerHTML = html;
+
+        if (reload_id == "items") update_items();
+        else if (reload_id == "abilities") update_abilities();
     });
 }
 
