@@ -104,18 +104,6 @@ function download_save_file() {
     a.download = "save.dat";
     a.click();
 }
-function selectResourceTab(btn) {
-  document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
-  btn.classList.add("tab-button-selected");
-
-  const underline = document.querySelector(".tab-underline");
-  underline.style.left = btn.offsetLeft + "px";
-  underline.style.width = btn.offsetWidth + "px";
-}
-
-window.addEventListener("load", () => {
-  selectResourceTab(document.querySelector(".tab-button-selected"));
-});
 
 function set_values() {
     update_resources();
@@ -377,3 +365,22 @@ function update_item(obj) {
         }
     }
 }
+
+function switchTab(btn, path) {
+    if (btn != null) {
+        document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
+        btn.classList.add("tab-button-selected");
+
+        const underline = document.querySelector(".tab-underline");
+        underline.style.left = btn.offsetLeft + "px";
+        underline.style.width = btn.offsetWidth + "px";
+    }
+
+    fetch("tabs/" + path + ".html")
+        .then(res => res.text())
+        .then(html => {
+        document.querySelector(".misc-container-content").innerHTML = html;
+    });
+}
+
+switchTab(document.querySelector(".tab-button"), "misc/items")

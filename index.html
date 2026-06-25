@@ -97,80 +97,15 @@
             <div class="misc-container">
                 <div class="tab-switcher">
                     <div class="tab-underline"></div>
-                    <button class="tab-button font tab-button-selected" onclick="selectResourceTab(this)">Items</button>
-                    <button class="tab-button font" onclick="selectResourceTab(this)">Abilities</button>
-                    <button class="tab-button font" onclick="selectResourceTab(this)">Bosses</button>
-                    <button class="tab-button font" onclick="selectResourceTab(this)">Wishes</button>
-                    <button class="tab-button font" onclick="selectResourceTab(this)">Collectables</button>
+                    <button class="tab-button font tab-button-selected" onclick="switchTab(this, 'misc/items')">Items</button>
+                    <button class="tab-button font" onclick="switchTab(this, 'misc/abilities')">Abilities</button>
+                    <button class="tab-button font" onclick="switchTab(this)">Bosses</button>
+                    <button class="tab-button font" onclick="switchTab(this)">Wishes</button>
+                    <button class="tab-button font" onclick="switchTab(this)">Collectables</button>
                     <!-- <button class="tab-button font" onclick="selectResourceTab(this.childNodes[1])">Hunters Journal</button> -->
                 </div>
-                <div class="items-container">
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/architect_key.png" alt="architect_key">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/bellhome_key.png" alt="bellhome_key">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/dock_key.png" alt="dock_key">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/whiteward_key.png" alt="whiteward_key">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/surgeons_key.png" alt="surgeons_key">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1], 'HasSlabKeyC')">
-                        <img src="resources/items/key_apostate.png" alt="key_apostate">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1], 'HasSlabKeyB')">
-                        <img src="resources/items/key_heretic.png" alt="key_heretic">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1], 'HasSlabKeyA')">
-                        <img src="resources/items/key_indolent.png" alt="key_indolent">
-                    </button>
-
-                    <div></div>
-
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/heart_ant.png" alt="heart_ant">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/heart_coral.png" alt="heart_coral">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/heart_flower.png" alt="heart_flower">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/heart_prince.png" alt="heart_prince">
-                    </button>
-
-                    <div></div>
-
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/melody_architect.png" alt="melody_architect">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/melody_conductor.png" alt="melody_conductor">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/melody_valutkeeper.png" alt="melody_valutkeeper">
-                    </button>
-
-                    <div></div>
-
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/craw_summons.png" alt="craw_summons">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/everbloom.png" alt="everbloom">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/farsight.png" alt="farsight">
-                    </button>
-                    <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/quill1.png" alt="quill">
-                    </button>
+                <div class="misc-container-content">
+                    
                 </div>
             </div>
         </div>
