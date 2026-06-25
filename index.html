@@ -18,14 +18,14 @@
             <p class="sub-title">Upload and edit your save file to your liking</p>
         </div>
         <div class="top-buttons">
-            <button class="top-button" onclick="openSaveFile()">
+            <button class="top-button" onclick="open_save_file()">
                 <p class="font">
                     <i class="fa-solid fa-folder"></i>
                     <span>Open Save File</span>
                 </p>
             </button>
             <input type="file" id="fileinput" style="display: none;"/>
-            <button class="top-button">
+            <button class="top-button" onclick="download_save_file()">
                 <p class="font">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span>Save Changes</span>
@@ -169,7 +169,7 @@
                         <img src="resources/items/farsight.png" alt="farsight">
                     </button>
                     <button class="item" onclick="update_item(this.childNodes[1])">
-                        <img src="resources/items/quill.png" alt="quill">
+                        <img src="resources/items/quill1.png" alt="quill">
                     </button>
                 </div>
             </div>

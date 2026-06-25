@@ -2,7 +2,30 @@ const AES_KEY = "UKu52ePUBwetZ9wNX88o54dnfKRu0T1l";
 let player_data;
 let scene_data;
 
-function openSaveFile() {
+const C_SHARP_HEADER = new Uint8Array([
+    0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF,
+    0xFF, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x06, 0x01, 0x00, 0x00, 0x00
+]);
+const END_BYTE = new Uint8Array([0x0B]);
+
+function csharp_length(len) {
+    const values = [];
+    for (let i = 0; i < 4; i++) {
+        if ((len >> 7) === 0) {
+            values.push(0x7F & len);
+            len >>= 7;
+            break;
+        } else {
+            values.push((0x7F & len) | 0x80);
+            len >>= 7;
+        }
+    }
+    if (len !== 0) values.push(len);
+    return new Uint8Array(values);
+}
+
+function open_save_file() {
     document.getElementById("fileinput").click();
 }
 
@@ -11,7 +34,7 @@ document.getElementById("fileinput").addEventListener("change", async (e) => {
     if (!file) return;
 
     const buffer = await file.arrayBuffer();
-    const save_data = decryptSaveFile(buffer);
+    const save_data = decrypt_save_file(buffer);
     player_data = save_data["playerData"];
     scene_data = save_data["sceneData"];
 
@@ -19,35 +42,68 @@ document.getElementById("fileinput").addEventListener("change", async (e) => {
     set_values();
 });
 
-function decryptSaveFile(arrayBuffer) {
-  const bytes = new Uint8Array(arrayBuffer);
+function decrypt_save_file(arrayBuffer) {
+    const bytes = new Uint8Array(arrayBuffer);
 
-  let start = 0;
-  for (let i = 0; i < bytes.length; i++) {
-    const c = bytes[i];
-    if ((c >= 65 && c <= 90) ||
-        (c >= 97 && c <= 122) ||
-        (c >= 48 && c <= 57) ||
-        c === 43 || c === 47 || c === 61) {
-      start = i;
-      break;
+    let start = 0;
+    for (let i = 0; i < bytes.length; i++) {
+        const c = bytes[i];
+        if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) ||
+            (c >= 48 && c <= 57) || c === 43 || c === 47 || c === 61) {
+            start = i;
+            break;
+        }
     }
-  }
 
-  const b64 = new TextDecoder().decode(bytes.slice(start, bytes.length - 1));
+    const b64 = new TextDecoder().decode(bytes.slice(start, bytes.length - 1));
 
-  const decrypted = CryptoJS.AES.decrypt(
-    { ciphertext: CryptoJS.enc.Base64.parse(b64) },
-    CryptoJS.enc.Utf8.parse(AES_KEY),
-    {
-      mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
-    }
-  );
+    const decrypted = CryptoJS.AES.decrypt(
+        { ciphertext: CryptoJS.enc.Base64.parse(b64) },
+        CryptoJS.enc.Utf8.parse(AES_KEY),
+        { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 }
+    );
 
-  return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+    return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 }
 
+function encrypt_save_file() {
+    const json_string = JSON.stringify({ playerData: player_data, sceneData: scene_data });
+    const json_bytes = new TextEncoder().encode(json_string);
+
+    const encrypted = CryptoJS.AES.encrypt(
+        CryptoJS.lib.WordArray.create(json_bytes),
+        CryptoJS.enc.Utf8.parse(AES_KEY),
+        { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 }
+    );
+
+    const b64_bytes = new TextEncoder().encode(
+        encrypted.ciphertext.toString(CryptoJS.enc.Base64)
+    );
+
+    const len_bytes = csharp_length(b64_bytes.length);
+
+    const result = new Uint8Array(
+        C_SHARP_HEADER.length + len_bytes.length + b64_bytes.length + END_BYTE.length
+    );
+    let offset = 0;
+    result.set(C_SHARP_HEADER, offset); offset += C_SHARP_HEADER.length;
+    result.set(len_bytes, offset);      offset += len_bytes.length;
+    result.set(b64_bytes, offset);      offset += b64_bytes.length;
+    result.set(END_BYTE, offset);
+
+    return result;
+}
+
+function download_save_file() {
+    const result = encrypt_save_file();
+
+    const blob = new Blob([result]);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "save.dat";
+    a.click();
+}
 function selectResourceTab(btn) {
   document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
   btn.classList.add("tab-button-selected");
@@ -146,6 +202,8 @@ function update_items() {
     if (everbloom) toggle_item(document.querySelector("img[alt='everbloom']"));
     const farsight = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Farsight" && item["Data"]["Amount"] != 0);
     if (farsight) toggle_item(document.querySelector("img[alt='farsight']"));
+
+    if (player_data["hasQuill"]) toggle_item(document.querySelector("img[alt='quill']"));
 }
 
 
@@ -303,6 +361,19 @@ function update_item(obj) {
         farsight["Data"]["Amount"] = farsight["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "quill") {
-        
+        player_data["QuillState"] += 1;
+        if (player_data["QuillState"] == 4) {
+            player_data["hasQuill"] = false;
+            player_data["QuillState"] = 0;
+            obj.src = "resources/items/quill1.png";
+            toggle_item(obj);
+        }
+        else {
+            obj.src = "resources/items/quill" + player_data["QuillState"] + ".png";
+        }
+        if (player_data["QuillState"] == 1) {
+            player_data["hasQuill"] = true;
+            toggle_item(obj);
+        }
     }
 }
