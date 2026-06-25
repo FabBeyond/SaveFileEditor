@@ -196,3 +196,28 @@ body {
     color: #c0bdbc;
     font-size: 20px;
 }
+
+.ability {
+    cursor: pointer;
+    width: 150px;
+    height: 200px;
+    background-color: #101418;
+    border: 2px solid #1c2024;
+    border-radius: 10px;
+    transition: background-color 0.25s ease-in-out;
+}
+
+.ability p {
+    font-family: "Roboto";
+    font-weight: bolder;
+    font-size: 17px;
+    color: #c0bdbc;
+}
+
+.ability-image {
+    width: 150px;
+}
+
+.ability-container {
+    padding: 30px;
+}
