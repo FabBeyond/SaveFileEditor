@@ -205,6 +205,16 @@ body {
     border: 2px solid #1c2024;
     border-radius: 10px;
     transition: background-color 0.25s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ability img {
+    filter: grayscale(1);
+    -webkit-filter: grayscale(1);
+    transition: filter 0.25s ease-in-out;
 }
 
 .ability p {
@@ -220,4 +230,24 @@ body {
 
 .ability-container {
     padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 5px;
+}
+
+.boss-img {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boss-img img {
+    max-height: 130px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.grid-break {
+    grid-column: 1 / -1;
 }
