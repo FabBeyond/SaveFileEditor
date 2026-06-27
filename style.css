@@ -198,10 +198,6 @@ body {
     color: #c0bdbc;
 }
 
-.ability-image {
-    width: 150px;
-}
-
 .ability-container {
     padding: 30px;
     display: grid;
