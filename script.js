@@ -149,50 +149,50 @@ function update_spools() {
 function update_items() {
     const architect_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Architect Key" && item["Data"]["Amount"] != 0);
     if (architect_key) {
-        toggle_item(document.querySelector("img[alt='architect_key']"));
+        toggle_ability(document.querySelector("img[alt='architect_key']"));
     }
     const bellhome_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Belltown House Key" && item["Data"]["Amount"] != 0);
     if (bellhome_key) {
-        toggle_item(document.querySelector("img[alt='bellhome_key']"));
+        toggle_ability(document.querySelector("img[alt='bellhome_key']"));
     }
     const dock_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Dock Key" && item["Data"]["Amount"] != 0);
     if (dock_key) {
-        toggle_item(document.querySelector("img[alt='dock_key']"));
+        toggle_ability(document.querySelector("img[alt='dock_key']"));
     }
     const whiteward_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Key" && item["Data"]["Amount"] != 0)
     if (whiteward_key) {
-        toggle_item(document.querySelector("img[alt='whiteward_key']"));
+        toggle_ability(document.querySelector("img[alt='whiteward_key']"));
     }
     const surgeons_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Boss Key" && item["Data"]["Amount"] != 0);
     if (surgeons_key) {
-        toggle_item(document.querySelector("img[alt='surgeons_key']"));
+        toggle_ability(document.querySelector("img[alt='surgeons_key']"));
     }
 
-    if (player_data["HasSlabKeyC"]) toggle_item(document.querySelector("img[alt='key_indolent']"));
-    if (player_data["HasSlabKeyB"]) toggle_item(document.querySelector("img[alt='key_heretic']"));
-    if (player_data["HasSlabKeyA"]) toggle_item(document.querySelector("img[alt='key_apostate']"));
+    if (player_data["HasSlabKeyC"]) toggle_ability(document.querySelector("img[alt='key_indolent']"));
+    if (player_data["HasSlabKeyB"]) toggle_ability(document.querySelector("img[alt='key_heretic']"));
+    if (player_data["HasSlabKeyA"]) toggle_ability(document.querySelector("img[alt='key_apostate']"));
 
     const clover_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Clover Heart" && item["Data"]["Amount"] != 0);
-    if (clover_heart) toggle_item(document.querySelector("img[alt='heart_prince']"));
+    if (clover_heart) toggle_ability(document.querySelector("img[alt='heart_prince']"));
     const coral_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Coral Heart" && item["Data"]["Amount"] != 0);
-    if (coral_heart) toggle_item(document.querySelector("img[alt='heart_coral']"));
+    if (coral_heart) toggle_ability(document.querySelector("img[alt='heart_coral']"));
     const flower_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Flower Heart" && item["Data"]["Amount"] != 0);
-    if (flower_heart) toggle_item(document.querySelector("img[alt='heart_flower']"));
+    if (flower_heart) toggle_ability(document.querySelector("img[alt='heart_flower']"));
     const hunter_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Hunter Heart" && item["Data"]["Amount"] != 0);
-    if (hunter_heart) toggle_item(document.querySelector("img[alt='heart_ant']"));
+    if (hunter_heart) toggle_ability(document.querySelector("img[alt='heart_ant']"));
 
-    if (player_data["HasMelodyArchitect"]) toggle_item(document.querySelector("img[alt='melody_architect']"));
-    if (player_data["HasMelodyConductor"]) toggle_item(document.querySelector("img[alt='melody_conductor']"));
-    if (player_data["HasMelodyLibrarian"]) toggle_item(document.querySelector("img[alt='melody_valutkeeper']"));
+    if (player_data["HasMelodyArchitect"]) toggle_ability(document.querySelector("img[alt='melody_architect']"));
+    if (player_data["HasMelodyConductor"]) toggle_ability(document.querySelector("img[alt='melody_conductor']"));
+    if (player_data["HasMelodyLibrarian"]) toggle_ability(document.querySelector("img[alt='melody_valutkeeper']"));
 
     const craw_summons = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Craw Summons" && item["Data"]["Amount"] != 0);
-    if (craw_summons) toggle_item(document.querySelector("img[alt='craw_summons']"));
+    if (craw_summons) toggle_ability(document.querySelector("img[alt='craw_summons']"));
     const everbloom = player_data["Collectables"]["savedData"].find(item => item["Name"] == "White Flower" && item["Data"]["Amount"] != 0);
-    if (everbloom) toggle_item(document.querySelector("img[alt='everbloom']"));
+    if (everbloom) toggle_ability(document.querySelector("img[alt='everbloom']"));
     const farsight = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Farsight" && item["Data"]["Amount"] != 0);
-    if (farsight) toggle_item(document.querySelector("img[alt='farsight']"));
+    if (farsight) toggle_ability(document.querySelector("img[alt='farsight']"));
 
-    if (player_data["hasQuill"]) toggle_item(document.querySelector("img[alt='quill']"));
+    if (player_data["hasQuill"]) toggle_ability(document.querySelector("img[alt='quill']"));
 }
 function update_abilities() {
     if (player_data["hasDash"]) toggle_ability(document.querySelector("img[alt='swift_step']"));
@@ -340,94 +340,95 @@ function toggle_ability(obj) {
 }
 
 function update_item(obj) {
+    obj = obj.querySelector("img");
     key = obj.alt;
+    
     if (key == "architect_key") {
         const architect_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Architect Key");
-        toggle_item(obj);
-        console.log(architect_key);
+        toggle_ability(obj);
         architect_key["Data"]["Amount"] = architect_key["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "bellhome_key") {
         const bellhome_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Belltown House Key");
-        toggle_item(obj);
+        toggle_ability(obj);
         bellhome_key["Data"]["Amount"] = bellhome_key["Data"]["Amount"] == 0 ? 1  : 0;
     }
     else if (key == "dock_key") {
         const dock_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Dock Key");
-        toggle_item(obj);
+        toggle_ability(obj);
         dock_key["Data"]["Amount"] = dock_key["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "whiteward_key") {
         const whiteward_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Key");
-        toggle_item(obj);
+        toggle_ability(obj);
         whiteward_key["Data"]["Amount"] = whiteward_key["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "surgeons_key") {
         const surgeons_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Boss Key");
-        toggle_item(obj);
+        toggle_ability(obj);
         surgeons_key["Data"]["Amount"] = surgeons_key["Data"]["Amount"] == 0 ? 1 : 0;
     }
 
     else if (key == "key_apostate") {
-        toggle_item(obj);
+        toggle_ability(obj);
         player_data["HasSlabKeyC"] = player_data["HasSlabKeyC"] == true ? false : true;
     }
     else if (key == "key_heretic") {
-        toggle_item(obj);
+        toggle_ability(obj);
         player_data["HasSlabKeyB"] = player_data["HasSlabKeyB"] == true ? false : true;
     }
     else if (key == "key_indolent") {
-        toggle_item(obj);
+        toggle_ability(obj);
         player_data["HasSlabKeyA"] = player_data["HasSlabKeyA"] == true ? false : true;
     }
 
     else if (key == "heart_ant") {
         const heart_hunter = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Hunter Heart");
-        toggle_item(obj);
+        toggle_ability(obj);
         heart_hunter["Data"]["Amount"] = heart_hunter["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "heart_coral") {
         const heart_coral = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Coral Heart");
-        toggle_item(obj);
+        toggle_ability(obj);
         heart_coral["Data"]["Amount"] = heart_coral["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "heart_flower") {
         const heart_flower = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Flower Heart");
-        toggle_item(obj);
+        toggle_ability(obj);
         heart_flower["Data"]["Amount"] = heart_flower["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "heart_prince") {
         const heart_clover = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Clover Heart");
-        toggle_item(obj);
+        toggle_ability(obj);
         heart_clover["Data"]["Amount"] = heart_clover["Data"]["Amount"] == 0 ? 1 : 0;
     }
 
     else if (key == "melody_architect") {
-        toggle_item(obj);
+        toggle_ability(obj);
         player_data["HasMelodyArchitect"] = player_data["HasMelodyArchitect"] == true ? false : true;
     }
     else if (key == "melody_conductor") {
-        toggle_item(obj);
+        toggle_ability(obj);
         player_data["HasMelodyConductor"] = player_data["HasMelodyConductor"] == true ? false : true;
     }
     else if (key == "melody_valutkeeper") {
-        toggle_item(obj);
+        toggle_ability(obj);
         player_data["HasMelodyLibrarian"] = player_data["HasMelodyLibrarian"] == true ? false : true;
     }
 
     else if (key == "craw_summons") {
         const craw_summons = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Craw Summons");
-        toggle_item(obj);
+        toggle_ability(obj);
         craw_summons["Data"]["Amount"] = craw_summons["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "everbloom") {
         const everbloom = player_data["Collectables"]["savedData"].find(item => item["Name"] == "White Flower");
-        toggle_item(obj);
+        toggle_ability(obj);
         everbloom["Data"]["Amount"] = everbloom["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "farsight") {
         const farsight = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Farsight");
-        toggle_item(obj);
+        toggle_ability(obj);
         farsight["Data"]["Amount"] = farsight["Data"]["Amount"] == 0 ? 1 : 0;
     }
     else if (key == "quill") {
@@ -436,14 +437,14 @@ function update_item(obj) {
             player_data["hasQuill"] = false;
             player_data["QuillState"] = 0;
             obj.src = "resources/items/quill1.png";
-            toggle_item(obj);
+            toggle_ability(obj);
         }
         else {
             obj.src = "resources/items/quill" + player_data["QuillState"] + ".png";
         }
         if (player_data["QuillState"] == 1) {
             player_data["hasQuill"] = true;
-            toggle_item(obj);
+            toggle_ability(obj);
         }
     }
 }
