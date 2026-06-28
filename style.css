@@ -221,3 +221,9 @@ body {
 .grid-break {
     grid-column: 1 / -1;
 }
+
+.ability .wish-bottom-text {
+    font-size: 14px;
+    color: #8d8988;
+    margin: 0;
+}
