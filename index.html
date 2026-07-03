@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <title>Silksong Save File Editor</title>
 </head>
 <body>
@@ -38,58 +40,56 @@
         <div class="inner-left">
             <div class="resources-container">
                 <div class="tab-switcher">
-                    <p class="single-title font">Resources</p>
+                    <p class="single-title font">General</p>
                 </div>
-                <div class="resources-content">
-                    <div class="resources-entry">
-                        <div class="resources-title font">
-                            <img src="resources/resources/rosaries.png" alt="rosaries" class="resources-title-icon">
-                            Rosaries
+                <div class="resources-split">
+                    <div class="resources-content">
+                        <div class="resources-entry">
+                            <div class="resources-title font">
+                                <img src="resources/resources/rosaries.png" alt="rosaries" class="resources-title-icon">
+                                Rosaries
+                            </div>
+                            <input type="text" class="font" onchange="on_rosaries_change(this)">
                         </div>
-                        <input type="text" class="font">
-                    </div>
-                    <div class="resources-entry">
-                        <div class="resources-title font">
-                            <img src="resources/resources/shell_shards.png" alt="shell_shards" class="resources-title-icon">
-                            Shell Shards
+                        <div class="resources-entry">
+                            <div class="resources-title font">
+                                <img src="resources/resources/shell_shards.png" alt="shell_shards" class="resources-title-icon">
+                                Shell Shards
+                            </div>
+                            <input type="text" class="font" onchange="on_shell_shard_change(this)">
+                            <p class="resources-title font shell-shards-cap">/ 500</p>
                         </div>
-                        <input type="text" class="font" onchange="on_shell_shard_change(this.childNodes[1])">
-                        <p class="resources-title font shell-shards-cap">/ 500</p>
-                    </div>
-                    <div class="resources-entry image-showcase masks">
-                        <div class="resources-title font">
-                            <img src="resources/resources/mask_full.png" alt="resources/mask_full" class="resources-title-icon">
-                            Mask Shards
+                        <div class="resources-entry image-showcase masks">
+                            <div class="resources-title font">
+                                <img src="resources/resources/mask_full.png" alt="resources/mask_full" class="resources-title-icon">
+                                Mask Shards
+                            </div>
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
+                            <img src="resources/resources/mask0.png" alt="mask">
                         </div>
-                        <button class="font" onclick="change_masks(-1)">-</button>
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <img src="resources/resources/mask0.png" alt="mask">
-                        <button class="font" onclick="change_masks(1)">+</button>
-                    </div>
-                    <div class="resources-entry image-showcase spools">
-                        <div class="resources-title font">
-                            <img src="resources/resources/spool_fragment.png" alt="spool_fragment" class="resources-title-icon">
-                            Spool Fragments
+                        <div class="resources-entry image-showcase spools">
+                            <div class="resources-title font">
+                                <img src="resources/resources/spool_fragment.png" alt="spool_fragment" class="resources-title-icon">
+                                Spool Fragments
+                            </div>
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
+                            <img src="resources/resources/spool0.png" alt="spool">
                         </div>
-                        <button class="font" onclick="change_spools(-1)">-</button>
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <img src="resources/resources/spool0.png" alt="spool">
-                        <button class="font" onclick="change_spools(1)">+</button>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
             </div>
         </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>

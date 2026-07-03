@@ -1,6 +1,31 @@
 const AES_KEY = "UKu52ePUBwetZ9wNX88o54dnfKRu0T1l";
 let player_data;
 let scene_data;
+let map;
+
+const mask_shards = [
+    [[1136.7087319396874, 1351.9879915330132], "Bought from Plebb"],
+    [[2302.271150742097, 902.5156720670847], "Bought from Grindle"],
+    [[1306.2001889689382, 856.0069201335178], "Wormways Entrance"],
+    [[1160.1811739695288, 2653.974354799316], "Marrow/Deep Docks Arena"],
+    [[1107.6759379551986, 3961.4910445330943], "Above Seamstress"],
+    [[1787.4411637337112, 1914.9275421314012], "Shellwood Center"],
+    [[1000.1690484626589, 1856.940364731743], "Wavenest Atla Platforming"],
+    [[3049.4714775008856, 3429.128633070097], "Bought from Jubilana"],
+    [[2993.9314161726106, 2556.732961329846], "After Cogwork Core Arena"],
+    [[2845.4593519940163, 3519.1331108035497], "After Moving Puzzle"],
+    [[1620.192334947443, 2341.057192868192], "Savage Beastfly 2 Wish"],
+    [[1030.4541159796856, 4524.198241471953], "Skull Cave"],
+    [[2901.580607062714, 366.03663600097696], "Mount Fay"],
+    [[3165.481693219036, 1619.1507100066403], "The Slab"],
+    [[2625.709696468643, 4628.57551086868], "After Slubberlug Room"],
+    [[2077.469797201449, 3304.1752759721053], "East Wisp Thicket"],
+    [[1988.7387701271605, 707.0177074004722], "Blasted Steps"],
+    [[3147.4764379355142, 1071.1025808027355], "Brightvein"],
+    [[1384.5278657648305, 4844.124780051003], "Sprintmaster Reward"],
+    [[1622.2164481713319, 2324.092811202475], "Dark Hearts Wish"],
+    [[1645.722924294319, 2335.5974924692664], "Hidden Hunter Wish"]
+];
 
 const C_SHARP_HEADER = new Uint8Array([
     0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF,
@@ -40,6 +65,7 @@ document.getElementById("fileinput").addEventListener("change", async (e) => {
 
     console.log(save_data);
     set_values();
+    calculate_completion_percentage();
 });
 
 function decrypt_save_file(arrayBuffer) {
@@ -285,7 +311,6 @@ function update_wishes() {
     });
 }
 
-
 function change_masks(amount) {
     player_data["heartPieces"] += amount;
     if (player_data["heartPieces"] == 4) {
@@ -335,6 +360,10 @@ function on_shell_shard_change(obj) {
     if (obj.value > player_data["ToolPouchUpgrades"] * 100 + 400) {
         obj.value = player_data["ToolPouchUpgrades"] * 100 + 400;
     }
+    player_data["ShellShards"] = obj.value;
+}
+function on_rosaries_change(obj) {
+    player_data["geo"] = obj.value;
 }
 
 function toggle_item(obj) {
@@ -792,7 +821,73 @@ function switchTab(btn, path, reload_id) {
         else if (reload_id == "abilities") update_abilities();
         else if (reload_id == "bosses") update_bosses();
         else if (reload_id == "wishes") update_wishes();
+        else if (reload_id == "collectables") {
+            createMap();
+        }
     });
+}
+
+function createMap() {
+    map = L.map("map", {
+        crs: L.CRS.Simple,
+        minZoom: -3,
+        maxZoom: 1
+    });
+
+    const bounds = [[0, 0], [4096, 5514]];
+    L.imageOverlay("resources/collectables/map.png", bounds).addTo(map);
+    map.fitBounds(bounds);
+
+    map.on("click", e => console.log(e.latlng));
+
+    const icon = L.divIcon({
+        className: "marker grey",
+        html: "<img class='dot' src='resources/collectables/mask_icon.png'>",
+    });
+    mask_shards.forEach(e => {
+        const marker = L.marker(e[0], {icon}).addTo(map);
+        marker.bindPopup(e[1]);
+
+        marker.on("mouseover", () => {
+            marker.openPopup();
+        });
+        marker.on("mouseout", () => {
+            marker.closePopup();
+        });
+        marker.off("click")
+        marker.on("click", (e) => {
+            L.DomEvent.stopPropagation(e);
+            marker.getElement().classList.toggle("grey");
+        });
+    });
+
+    document.querySelector(".map-smaller-button").classList.toggle("hide");
+}
+
+function expand_map() {
+    const map_div = document.getElementById("map");
+
+    map_div.classList.add("expanded");
+
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
+
+    document.querySelector(".map-fullscreen-button").classList.toggle("hide");
+    document.querySelector(".map-smaller-button").classList.toggle("hide");
+}
+
+function shrink_map() {
+    const map_div = document.getElementById("map");
+
+    map_div.classList.remove("expanded");
+
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
+
+    document.querySelector(".map-fullscreen-button").classList.toggle("hide");
+    document.querySelector(".map-smaller-button").classList.toggle("hide");
 }
 
 function get_quest(name) {
@@ -824,6 +919,34 @@ function switch_wish_state(obj, state) {
     
     obj.style.webkitFilter = "grayscale(0)";
     obj.parentNode.parentNode.style.backgroundColor = "#474e55";
+}
+
+function calculate_completion_percentage() {
+    percentage = 0;
+    percentage += player_data["Tools"]["savedData"].filter(item => item["Data"]["IsHidden"] == false).length;
+    player_data["ToolEquips"]["savedData"].forEach(element => {
+        if (element["Name"] == "Hunter_v3") percentage -= 2;
+        else if (element["Name"] == "Hunter_v2") percentage--;
+        if (["Cloakless", "Cursed"].includes(element["Name"])) percentage--;
+
+        percentage++;
+    });
+    
+    percentage += player_data["nailUpgrades"];
+    percentage += player_data["ToolKitUpgrades"];
+    percentage += player_data["ToolPouchUpgrades"];
+    percentage += player_data["silkRegenMax"];
+    percentage += player_data["maxHealthBase"] - 5;
+    percentage += player_data["silkMax"] - 9;
+    percentage += player_data["hasNeedolin"] ? 1 : 0;
+    percentage += player_data["hasDash"] ? 1 : 0;
+    percentage += player_data["hasWalljump"] ? 1 : 0;
+    percentage += player_data["hasHarpoonDash"] ? 1 : 0;
+    percentage += player_data["hasSuperJump"] ? 1 : 0;
+    percentage += player_data["hasChargeSlash"] ? 1 : 0;
+    percentage += player_data["HasBoundCrestUpgrader"] ? 1 : 0;
+    percentage += player_data["HasWhiteFlower"] ? 1 : 0;
+    console.log(percentage);
 }
 
 switchTab(document.querySelector(".tab-button"), "misc/items");
