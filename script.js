@@ -5,27 +5,56 @@ let map;
 const misc_tab_contaner = document.querySelector(".misc-container-content");
 
 const mask_shards = [
-    {map_location: [1136.7087319396874, 1351.9879915330132], label: "Bought from Plebb", img: "resources/collectables/mask_icon.png", key: "", type: ""},
-    {map_location: [2302.271150742097, 902.5156720670847], label: "Bought from Grindle", img: "resources/collectables/mask_icon.png", key: "", type: ""},
-    {map_location: [1306.2001889689382, 856.0069201335178], label: "Wormways Entrance", img: "resources/collectables/mask_icon.png", key: "Crawl_02", type: "sceneData"},
-    {map_location: [1160.1811739695288, 2653.974354799316], label: "Marrow/Deep Docks Arena", img: "resources/collectables/mask_icon.png", key: "Dock_08", type: "sceneData"},
-    {map_location: [1107.6759379551986, 3961.4910445330943], label: "Above Seamstress", img: "resources/collectables/mask_icon.png", key: "Bone_East_20", type: "sceneData"},
-    {map_location: [1787.4411637337112, 1914.9275421314012], label: "Shellwood Center", img: "resources/collectables/mask_icon.png", key: "Shellwood_14", type: "sceneData"},
-    {map_location: [1000.1690484626589, 1856.940364731743], label: "Wavenest Atla Platforming", img: "resources/collectables/mask_icon.png", key: "Weave_05b", type: "sceneData"},
-    {map_location: [3049.4714775008856, 3429.128633070097], label: "Bought from Jubilana", img: "resources/collectables/mask_icon.png", key: "", type: ""},
-    {map_location: [2993.9314161726106, 2556.732961329846], label: "After Cogwork Core Arena", img: "resources/collectables/mask_icon.png", key: "Song_09", type: "sceneData"},
-    {map_location: [2845.4593519940163, 3519.1331108035497], label: "After Moving Puzzle", img: "resources/collectables/mask_icon.png", key: "Library_05", type: "sceneData"},
-    {map_location: [1620.192334947443, 2341.057192868192], label: "Savage Beastfly 2 Wish", img: "resources/collectables/mask_icon.png", key: "", type: ""},
-    {map_location: [1030.4541159796856, 4524.198241471953], label: "Skull Cave", img: "resources/collectables/mask_icon.png", key: "Bone_East_LavaChallenge", type: "sceneData"},
-    {map_location: [2901.580607062714, 366.03663600097696], label: "Mount Fay", img: "resources/collectables/mask_icon.png", key: "Peak_04c", type: "sceneData"},
-    {map_location: [3165.481693219036, 1619.1507100066403], label: "The Slab", img: "resources/collectables/mask_icon.png", key: "Slab_17", type: "sceneData"},
-    {map_location: [2625.709696468643, 4628.57551086868], label: "After Slubberlug Room", img: "resources/collectables/mask_icon.png", key: "Shadow_13", type: "sceneData"},
-    {map_location: [2077.469797201449, 3304.1752759721053], label: "East Wisp Thicket", img: "resources/collectables/mask_icon.png", key: "Wisp_07", type: "sceneData"},
-    {map_location: [1988.7387701271605, 707.0177074004722], label: "Blasted Steps", img: "resources/collectables/mask_icon.png", key: "Coral_19b", type: "sceneData"},
-    {map_location: [3147.4764379355142, 1071.1025808027355], label: "Brightvein", img: "resources/collectables/mask_icon.png", key: "Peak_06", type: "sceneData"},
-    {map_location: [1384.5278657648305, 4844.124780051003], label: "Sprintmaster Reward", img: "resources/collectables/mask_icon.png", key: "", type: ""},
-    {map_location: [1622.2164481713319, 2324.092811202475], label: "Dark Hearts Wish", img: "resources/collectables/mask_icon.png", key: "", type: ""},
-    {map_location: [1645.722924294319, 2335.5974924692664], label: "Hidden Hunter Wish", img: "resources/collectables/mask_icon.png", key: "", type: ""},
+    {map_location: [1136.7087319396874, 1351.9879915330132], label: "Bought from Plebb", key: "", type: ""},
+    {map_location: [2302.271150742097, 902.5156720670847], label: "Bought from Grindle", key: "", type: ""},
+    {map_location: [1306.2001889689382, 856.0069201335178], label: "Wormways Entrance", key: "Crawl_02", type: "sceneData"},
+    {map_location: [1160.1811739695288, 2653.974354799316], label: "Marrow/Deep Docks Arena", key: "Dock_08", type: "sceneData"},
+    {map_location: [1107.6759379551986, 3961.4910445330943], label: "Above Seamstress", key: "Bone_East_20", type: "sceneData"},
+    {map_location: [1787.4411637337112, 1914.9275421314012], label: "Shellwood Center", key: "Shellwood_14", type: "sceneData"},
+    {map_location: [1000.1690484626589, 1856.940364731743], label: "Wavenest Atla Platforming", key: "Weave_05b", type: "sceneData"},
+    {map_location: [3049.4714775008856, 3429.128633070097], label: "Bought from Jubilana", key: "", type: ""},
+    {map_location: [2993.9314161726106, 2556.732961329846], label: "After Cogwork Core Arena", key: "Song_09", type: "sceneData"},
+    {map_location: [2845.4593519940163, 3519.1331108035497], label: "After Moving Puzzle", key: "Library_05", type: "sceneData"},
+    {map_location: [1620.192334947443, 2341.057192868192], label: "Savage Beastfly 2 Wish", key: "", type: ""},
+    {map_location: [1030.4541159796856, 4524.198241471953], label: "Skull Cave", key: "Bone_East_LavaChallenge", type: "sceneData"},
+    {map_location: [2901.580607062714, 366.03663600097696], label: "Mount Fay", key: "Peak_04c", type: "sceneData"},
+    {map_location: [3165.481693219036, 1619.1507100066403], label: "The Slab", key: "Slab_17", type: "sceneData"},
+    {map_location: [2625.709696468643, 4628.57551086868], label: "After Slubberlug Room", key: "Shadow_13", type: "sceneData"},
+    {map_location: [2077.469797201449, 3304.1752759721053], label: "East Wisp Thicket", key: "Wisp_07", type: "sceneData"},
+    {map_location: [1988.7387701271605, 707.0177074004722], label: "Blasted Steps", key: "Coral_19b", type: "sceneData"},
+    {map_location: [3147.4764379355142, 1071.1025808027355], label: "Brightvein", key: "Peak_06", type: "sceneData"},
+    {map_location: [1384.5278657648305, 4844.124780051003], label: "Sprintmaster Reward", key: "", type: ""},
+    {map_location: [1622.2164481713319, 2324.092811202475], label: "Dark Hearts Wish", key: "", type: ""},
+    {map_location: [1645.722924294319, 2335.5974924692664], label: "Hidden Hunter Wish", key: "", type: ""},
+];
+const fleas = [
+    { label: "", key: "", type: "pd_bool", map_location: [1466.930782826843, 1853.9751290953118] },
+    { label: "", key: "", type: "pd_bool", map_location: [1094.947288899025, 2660.4543425620677] },
+    { label: "", key: "", type: "pd_bool", map_location: [1277.8632761274873, 2859.8796569127985] },
+    { label: "", key: "", type: "pd_bool", map_location: [991.9005644563543, 3616.8157656737753] },
+    { label: "", key: "", type: "pd_bool", map_location: [1388.898682935173, 2611.9444233742743] },
+    { label: "", key: "", type: "pd_bool", map_location: [1203.9044985460973, 3677.885783469965] },
+    { label: "", key: "", type: "pd_bool", map_location: [1313.8856833342836, 4107.823059194212] },
+    { label: "", key: "", type: "pd_bool", map_location: [1395.8660128855693, 995.875718411763] },
+    { label: "", key: "", type: "pd_bool", map_location: [1808.8757625862363, 4330.835166438136] },
+    { label: "", key: "", type: "pd_bool", map_location: [1876.8920120873481, 2865.8954109169413] },
+    { label: "", key: "", type: "pd_bool", map_location: [1882.8872227607048, 3482.927940018088] },
+    { label: "", key: "", type: "pd_bool", map_location: [1922.9541022863332, 2314.9668874172185] },
+    { label: "", key: "", type: "pd_bool", map_location: [1700.9920748047207, 1703.0561601073605] },
+    { label: "", key: "", type: "pd_bool", map_location: [2401.83984263641, 979.8875339148699] },
+    { label: "", key: "", type: "pd_bool", map_location: [2280.9506813387306, 4266.867403798466] },
+    { label: "", key: "", type: "pd_bool", map_location: [2205.89457779805, 2309.9044548822826] },
+    { label: "", key: "", type: "pd_bool", map_location: [2231.8901305661666, 2601.8618607229337] },
+    { label: "", key: "", type: "pd_bool", map_location: [2929.855921090142, 2337.9502581906236] },
+    { label: "", key: "", type: "pd_bool", map_location: [3034.8379611152286, 2446.934358316072] },
+    { label: "", key: "", type: "pd_bool", map_location: [3389.854210616341, 3081.8678414096917] },
+    { label: "", key: "", type: "pd_bool", map_location: [2936.889275329266, 1432.0106485398373] },
+    { label: "", key: "", type: "pd_bool", map_location: [2765.952591367809, 1509.0030632785833] },
+    { label: "", key: "", type: "pd_bool", map_location: [3118.8846570500027, 807.02873647052] },
+    { label: "", key: "", type: "pd_bool", map_location: [2481.925879468613, 1065.023193394988] },
+    { label: "", key: "", type: "pd_bool", map_location: [3224.4462626147442, 4185.927794147679] },
+    { label: "", key: "", type: "pd_bool", map_location: [3094.913906152004, 3701.926043702774] },
+    { label: "", key: "", type: "pd_bool", map_location: [2935.941102685444, 3350.9772442162384] }
 ];
 
 const abilities = [
@@ -451,12 +480,13 @@ function createMap() {
 
     map.on("click", e => console.log(e.latlng));
 
-    create_marker(mask_shards, "resources/collectables/mask_icon.png");
+    create_markers(mask_shards, "resources/collectables/mask_icon.png");
+    create_markers(fleas, "resources/collectables/flea_icon.png");
 
     document.querySelector(".map-smaller-button").classList.toggle("hide");
 }
 
-function create_marker(list, icon_path) {
+function create_markers(list, icon_path) {
     const icon = L.divIcon({
         className: "marker grey",
         html: `<img class='dot' src='${icon_path}'>`,
