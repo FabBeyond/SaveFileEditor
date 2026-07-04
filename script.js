@@ -2,6 +2,7 @@ const AES_KEY = "UKu52ePUBwetZ9wNX88o54dnfKRu0T1l";
 let player_data;
 let scene_data;
 let map;
+const misc_tab_contaner = document.querySelector(".misc-container-content");
 
 const mask_shards = [
     [[1136.7087319396874, 1351.9879915330132], "Bought from Plebb"],
@@ -27,6 +28,89 @@ const mask_shards = [
     [[1645.722924294319, 2335.5974924692664], "Hidden Hunter Wish"]
 ];
 
+const abilities = [
+    { key: "hasDash", type: "pd_bool", label: "Swift Step", img: "resources/abilities/swift_step.png" },
+    { key: "hasBrolly", type: "pd_bool", label: "Drifter's Cloak", img: "resources/abilities/drifters_cloak.png" },
+    { key: "hasWalljump", type: "pd_bool", label: "Cling Grip", img: "resources/abilities/cling_grip.png" },
+    { key: "hasNeedolin", type: "pd_bool", label: "Needolin", img: "resources/abilities/needolin.png" },
+    { key: "hasChargeSlash", type: "pd_bool", label: "Needle Strike", img: "resources/abilities/needle_strike.png" },
+    { key: "hasHarpoonDash", type: "pd_bool", label: "Clawline", img: "resources/abilities/clawline.png" },
+    { key: "UnlockedFastTravelTeleport", type: "pd_bool", label: "Beastling's Call", img: "resources/abilities/beastling_call.png" },
+    { key: "hasNeedolinMemoryPowerup", type: "pd_bool", label: "Elegy of the Deep", img: "resources/abilities/elegy.png" },
+    { key: "hasSuperJump", type: "pd_bool", label: "Silksoar", img: "resources/abilities/silksoar.png" },
+    { key: "HasBoundCrestUpgrader", type: "pd_bool", label: "Sylphsong", img: "resources/abilities/sylphsong.png" }
+];
+const items = [
+    { key: "Architect Key", type: "collectable", label: "Architect Key", img: "resources/items/architect_key.png" },
+    { key: "Belltown House Key", type: "collectable", label: "Bellhome Key", img: "resources/items/bellhome_key.png" },
+    { key: "Dock Key", type: "collectable", label: "Diving Bell Key", img: "resources/items/dock_key.png" },
+    { key: "Ward Key", type: "collectable", label: "White Key", img: "resources/items/whiteward_key.png" },
+    { key: "Ward Boss Key", type: "collectable", label: "Surgeons Key", img: "resources/items/surgeons_key.png" },
+    { key: "HasSlabKeyA", type: "pd_bool", label: "Apostate Key", img: "resources/items/key_apostate.png" },
+    { key: "HasSlabKeyB", type: "pd_bool", label: "Heretic Key", img: "resources/items/key_heretic.png" },
+    { key: "HasSlabKeyC", type: "pd_bool", label: "Indolent Key", img: "resources/items/key_indolent.png" },
+    { key: "Clover Heart", type: "collectable", label: "Conjoined Heart", img: "resources/items/heart_ant.png" },
+    { key: "Coral Heart", type: "collectable", label: "Encrusted Heart", img: "resources/items/heart_coral.png" },
+    { key: "Flower Heart", type: "collectable", label: "Pollen Heart", img: "resources/items/heart_flower.png" },
+    { key: "Hunter Heart", type: "collectable", label: "Hunter's Heart", img: "resources/items/heart_prince.png" },
+    { key: "HasMelodyArchitect", type: "pd_bool", label: "Arcitect's Melody", img: "resources/items/melody_architect.png" },
+    { key: "HasMelodyConductor", type: "pd_bool", label: "Conductor's Melody", img: "resources/items/melody_conductor.png" },
+    { key: "HasMelodyLibrarian", type: "pd_bool", label: "Librarian's Melody", img: "resources/items/melody_valutkeeper.png" },
+    { key: "Craw Summons", type: "collectable", label: "Craw Summons", img: "resources/items/craw_summons.png" },
+    { key: "White Flower", type: "collectable", label: "Everbloom", img: "resources/items/everbloom.png" },
+    { key: "Farsight", type: "collectable", label: "Farsight", img: "resources/items/farsight.png" },
+    { key: "quill", type: "custom", label: "Quill", img: "resources/items/quill1.png" }
+];
+const bosses = [
+    { key: "defeatedMossMother", type: "pd_bool", label: "Moss Mother", img: "resources/bosses/act1/moss_mother.png" },
+    { key: "moss_mother2", type: "custom", label: "Moss Mother 2", img: "resources/bosses/act1/moss_mother2.png" },
+    { key: "skullKingDefeated", type: "pd_bool", label: "Skull Tyrant", img: "resources/bosses/act1/skull_tyrant.png" },
+    { key: "skullKingKilled", type: "pd_bool", label: "Skull Tyrant 2", img: "resources/bosses/act1/skull_tyrant.png" },
+    { key: "defeatedBellBeast", type: "pd_bool", label: "Bell Beast", img: "resources/bosses/act1/bell_beast.png" },
+    { key: "defeatedLace1", type: "pd_bool", label: "Lace", img: "resources/bosses/act1/lace.png" },
+    { key: "defeatedSongGolem", type: "pd_bool", label: "Fourth Chorus", img: "resources/bosses/act1/fourth_chorus.png" },
+    { key: "defeatedBoneFlyerGiant", type: "pd_bool", label: "Savage Beastfly", img: "resources/bosses/act1/savage_beastfly.png" },
+    { key: "defeatedBoneFlyerGiantGolemScene", type: "pd_bool", label: "Savage Beastfly 2", img: "resources/bosses/act1/savage_beastfly.png" },
+    { key: "defeatedVampireGnatBoss", type: "pd_bool", label: "Moorwing", img: "resources/bosses/act1/moorwing.png" },
+    { key: "spinnerDefeated", type: "pd_bool", label: "Widow", img: "resources/bosses/act1/widow.png" },
+    { key: "defeatedSplinterQueen", type: "pd_bool", label: "Sister Splinter", img: "resources/bosses/act1/sister_splinter.png" },
+    { key: "defeatedPhantom", type: "pd_bool", label: "Phantom", img: "resources/bosses/act1/phantom.png" },
+    { key: "defeatedCoralDrillers", type: "pd_bool", label: "Conchflies", img: "resources/bosses/act1/conchfly.png" },
+    { key: "defeatedLastJudge", type: "pd_bool", label: "Last Judge", img: "resources/bosses/act1/last_judge.png" },
+
+    { key: "defeatedDockForemen", type: "pd_bool", label: "Forebrothers", img: "resources/bosses/act2/forebrothers.png" },
+    { key: "defeatedWispPyreEffigy", type: "pd_bool", label: "Father of the Flame", img: "resources/bosses/act2/father_of_the_flame.png" },
+    { key: "defeatedRoachkeeperChef", type: "pd_bool", label: "Lugoli", img: "resources/bosses/act2/lugoli.png" },
+    { key: "DefeatedSwampShaman", type: "pd_bool", label: "Groal", img: "resources/bosses/act2/groal.png" },
+    { key: "defeatedZapCoreEnemy", type: "pd_bool", label: "Voltwyrm", img: "resources/bosses/act2/voltwyrm.png" },
+    { key: "defeatedCoralDrillerSolo", type: "pd_bool", label: "Conchfly", img: "resources/bosses/act1/conchfly.png" },
+    { key: "defeatedFirstWeaver", type: "pd_bool", label: "First Sinner", img: "resources/bosses/act2/first_sinner.png" },
+    { key: "defeatedBroodMother", type: "pd_bool", label: "Broodmother", img: "resources/bosses/act2/broodmother.png" },
+    { key: "defeatedTrobbio", type: "pd_bool", label: "Trobbio", img: "resources/bosses/act2/trobbio.png" },
+    { key: "defeatedCogworkDancers", type: "pd_bool", label: "Cogwork Dancers", img: "resources/bosses/act2/cogwork_dancers.png" },
+    { key: "defeatedLaceTower", type: "pd_bool", label: "Lace 2", img: "resources/bosses/act1/lace.png" },
+    { key: "wardBossDefeated", type: "pd_bool", label: "The Unravelled", img: "resources/bosses/act2/unravelled.png" },
+    { key: "cog7_automaton_defeated", type: "pd_bool", label: "Second Sentinel", img: "resources/bosses/act2/sentinel.png" },
+    { key: "Abyss Mass", type: "journal", label: "Summoned Saviour", img: "resources/bosses/act2/summoned_saviour.png" },
+
+    { key: "Giant Centipede", type: "journal", label: "Bell Eater", img: "resources/bosses/act3/bell_eater.png" },
+    { key: "moss_mother3", type: "custom", label: "Moss Mother 3", img: "resources/bosses/act1/moss_mother.png" },
+    { key: "defeatedAntQueen", type: "pd_bool", label: "Karmelita", img: "resources/bosses/act3/karmelita.png" },
+    { key: "defeatedAntTrapper", type: "pd_bool", label: "Gurr", img: "resources/bosses/act3/gurr.png" },
+    { key: "defeatedCrowCourt", type: "pd_bool", label: "Crawfather", img: "resources/bosses/act3/crawfather.png" },
+    { key: "defeatedSeth", type: "pd_bool", label: "Seth", img: "resources/bosses/act3/seth.png" },
+    { key: "defeatedFlowerQueen", type: "pd_bool", label: "Nyleth", img: "resources/bosses/act3/nyleth.png" },
+    { key: "defeatedCoralKing", type: "pd_bool", label: "Crust King Khann", img: "resources/bosses/act3/khann.png" },
+    { key: "defeatedGreyWarrior", type: "pd_bool", label: "Watcher at the Edge", img: "resources/bosses/act3/watcher_at_the_edge.png" },
+    { key: "defeatedTormentedTrobbio", type: "pd_bool", label: "Tormented Trobbio", img: "resources/bosses/act3/tormented_trobbio.png" },
+    { key: "defeatedWhiteCloverstag", type: "pd_bool", label: "Cloverstag", img: "resources/bosses/act3/palestag.png" },
+    { key: "defeatedCloverDancers", type: "pd_bool", label: "Clover Dancers", img: "resources/bosses/act3/clover_dancers.png" },
+    { key: "defeatedSongChevalierBoss", type: "pd_bool", label: "Pinstress", img: "resources/bosses/act3/pinstress.png" },
+    { key: "BlueScientistDead", type: "pd_bool", label: "Plasmified Zango", img: "resources/bosses/act3/zango.png" },
+    { key: "garmondBlackThreadDefeated", type: "pd_bool", label: "Lost Garmond", img: "resources/bosses/act3/lost_garmond.png" },
+    { key: "Lost Lace", type: "journal", label: "Lost Lace", img: "resources/bosses/act3/lost_lace.png" }
+];
+
 const C_SHARP_HEADER = new Uint8Array([
     0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF,
     0xFF, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -49,11 +133,9 @@ function csharp_length(len) {
     if (len !== 0) values.push(len);
     return new Uint8Array(values);
 }
-
 function open_save_file() {
     document.getElementById("fileinput").click();
 }
-
 document.getElementById("fileinput").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -64,10 +146,8 @@ document.getElementById("fileinput").addEventListener("change", async (e) => {
     scene_data = save_data["sceneData"];
 
     console.log(save_data);
-    set_values();
     calculate_completion_percentage();
 });
-
 function decrypt_save_file(arrayBuffer) {
     const bytes = new Uint8Array(arrayBuffer);
 
@@ -91,7 +171,6 @@ function decrypt_save_file(arrayBuffer) {
 
     return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 }
-
 function encrypt_save_file() {
     const json_string = JSON.stringify({ playerData: player_data, sceneData: scene_data });
     const json_bytes = new TextEncoder().encode(json_string);
@@ -119,7 +198,6 @@ function encrypt_save_file() {
 
     return result;
 }
-
 function download_save_file() {
     const result = encrypt_save_file();
 
@@ -129,14 +207,6 @@ function download_save_file() {
     a.href = url;
     a.download = "save.dat";
     a.click();
-}
-
-function set_values() {
-    update_resources();
-    update_masks();
-    update_spools();
-    update_items();
-    update_abilities();
 }
 
 function update_resources() {
@@ -172,120 +242,27 @@ function update_spools() {
         }
     }
 }
-function update_items() {
-    const architect_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Architect Key" && item["Data"]["Amount"] != 0);
-    if (architect_key) {
-        toggle_ability(document.querySelector("img[alt='architect_key']"));
-    }
-    const bellhome_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Belltown House Key" && item["Data"]["Amount"] != 0);
-    if (bellhome_key) {
-        toggle_ability(document.querySelector("img[alt='bellhome_key']"));
-    }
-    const dock_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Dock Key" && item["Data"]["Amount"] != 0);
-    if (dock_key) {
-        toggle_ability(document.querySelector("img[alt='dock_key']"));
-    }
-    const whiteward_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Key" && item["Data"]["Amount"] != 0)
-    if (whiteward_key) {
-        toggle_ability(document.querySelector("img[alt='whiteward_key']"));
-    }
-    const surgeons_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Boss Key" && item["Data"]["Amount"] != 0);
-    if (surgeons_key) {
-        toggle_ability(document.querySelector("img[alt='surgeons_key']"));
-    }
+function create_base_ui(tab) {
+    const ui_template = `
+    <div class="boss-img">
+        <img src="">
+    </div>
+    <p></p>`;
 
-    if (player_data["HasSlabKeyC"]) toggle_ability(document.querySelector("img[alt='key_indolent']"));
-    if (player_data["HasSlabKeyB"]) toggle_ability(document.querySelector("img[alt='key_heretic']"));
-    if (player_data["HasSlabKeyA"]) toggle_ability(document.querySelector("img[alt='key_apostate']"));
+    const div = document.createElement("div");
+    div.classList.add("ability-container");
+    misc_tab_contaner.appendChild(div);
 
-    const clover_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Clover Heart" && item["Data"]["Amount"] != 0);
-    if (clover_heart) toggle_ability(document.querySelector("img[alt='heart_prince']"));
-    const coral_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Coral Heart" && item["Data"]["Amount"] != 0);
-    if (coral_heart) toggle_ability(document.querySelector("img[alt='heart_coral']"));
-    const flower_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Flower Heart" && item["Data"]["Amount"] != 0);
-    if (flower_heart) toggle_ability(document.querySelector("img[alt='heart_flower']"));
-    const hunter_heart = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Hunter Heart" && item["Data"]["Amount"] != 0);
-    if (hunter_heart) toggle_ability(document.querySelector("img[alt='heart_ant']"));
+    tab.forEach(item => {
+        const button = document.createElement("button");
+        button.classList.add("ability");
+        button.addEventListener("click", () => update_value(item, button));
+        button.innerHTML = ui_template;
+        button.querySelector("img").src = item["img"];
+        button.querySelector("p").innerHTML = item["label"];
 
-    if (player_data["HasMelodyArchitect"]) toggle_ability(document.querySelector("img[alt='melody_architect']"));
-    if (player_data["HasMelodyConductor"]) toggle_ability(document.querySelector("img[alt='melody_conductor']"));
-    if (player_data["HasMelodyLibrarian"]) toggle_ability(document.querySelector("img[alt='melody_valutkeeper']"));
-
-    const craw_summons = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Craw Summons" && item["Data"]["Amount"] != 0);
-    if (craw_summons) toggle_ability(document.querySelector("img[alt='craw_summons']"));
-    const everbloom = player_data["Collectables"]["savedData"].find(item => item["Name"] == "White Flower" && item["Data"]["Amount"] != 0);
-    if (everbloom) toggle_ability(document.querySelector("img[alt='everbloom']"));
-    const farsight = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Farsight" && item["Data"]["Amount"] != 0);
-    if (farsight) toggle_ability(document.querySelector("img[alt='farsight']"));
-
-    if (player_data["hasQuill"]) toggle_ability(document.querySelector("img[alt='quill']"));
-}
-function update_abilities() {
-    if (player_data["hasDash"]) toggle_ability(document.querySelector("img[alt='swift_step']"));
-    if (player_data["hasBrolly"]) toggle_ability(document.querySelector("img[alt='drifters_cloak']"));
-    if (player_data["hasWalljump"]) toggle_ability(document.querySelector("img[alt='cling_grip']"));
-    if (player_data["hasNeedolin"]) toggle_ability(document.querySelector("img[alt='needolin']"));
-    if (player_data["hasChargeSlash"]) toggle_ability(document.querySelector("img[alt='needle_strike']"));
-    if (player_data["hasHarpoonDash"]) toggle_ability(document.querySelector("img[alt='clawline']"));
-    if (player_data["UnlockedFastTravelTeleport"]) toggle_ability(document.querySelector("img[alt='beastling_call']"));
-    if (player_data["hasNeedolinMemoryPowerup"]) toggle_ability(document.querySelector("img[alt='elegy']"));
-    if (player_data["hasSuperJump"]) toggle_ability(document.querySelector("img[alt='silksoar']"));
-    if (player_data["HasBoundCrestUpgrader"]) toggle_ability(document.querySelector("img[alt='sylphsong']"));
-}
-function update_bosses() {
-    //#region Act1
-    if (player_data["defeatedMossMother"]) toggle_ability(document.querySelector("img[alt='moss_mother']"));
-    if (player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Mossbone Mother")["Record"]["Kills"] >= 3) toggle_ability(document.querySelector("img[alt='moss_mother2']"));
-    if (player_data["skullKingDefeated"]) toggle_ability(document.querySelector("img[alt='skull_tyrant']"));
-    if (player_data["skullKingKilled"]) toggle_ability(document.querySelector("img[alt='skull_tyrant2']"));
-    if (player_data["defeatedBellBeast"]) toggle_ability(document.querySelector("img[alt='bell_beast']"));
-    if (player_data["defeatedLace1"]) toggle_ability(document.querySelector("img[alt='lace']"));
-    if (player_data["defeatedSongGolem"]) toggle_ability(document.querySelector("img[alt='fourth_chorus']"));
-    if (player_data["defeatedBoneFlyerGiant"]) toggle_ability(document.querySelector("img[alt='savage_beastfly']"));
-    if (player_data["defeatedBoneFlyerGiantGolemScene"]) toggle_ability(document.querySelector("img[alt='savage_beastfly2']"));
-    if (player_data["defeatedVampireGnatBoss"]) toggle_ability(document.querySelector("img[alt='moorwing']"));
-    if (player_data["spinnerDefeated"]) toggle_ability(document.querySelector("img[alt='widow']"));
-    if (player_data["defeatedSplinterQueen"]) toggle_ability(document.querySelector("img[alt='sister_splinter']"));
-    if (player_data["defeatedPhantom"]) toggle_ability(document.querySelector("img[alt='phantom']"));
-    if (player_data["defeatedCoralDrillers"]) toggle_ability(document.querySelector("img[alt='conchflies']"));
-    if (player_data["defeatedLastJudge"]) toggle_ability(document.querySelector("img[alt='last_judge']"));
-    //#endregion
-    //#region Act2
-    if (player_data["defeatedDockForemen"]) toggle_ability(document.querySelector("img[alt='forebrothers']"));
-    if (player_data["defeatedWispPyreEffigy"]) toggle_ability(document.querySelector("img[alt='father_of_the_flame']"));
-    if (player_data["defeatedRoachkeeperChef"]) toggle_ability(document.querySelector("img[alt='lugoli']"));
-    if (player_data["DefeatedSwampShaman"]) toggle_ability(document.querySelector("img[alt='groal']"));
-    if (player_data["defeatedZapCoreEnemy"]) toggle_ability(document.querySelector("img[alt='voltwyrm']"));
-    if (player_data["defeatedCoralDrillerSolo"]) toggle_ability(document.querySelector("img[alt='conchfly']"));
-    if (player_data["defeatedFirstWeaver"]) toggle_ability(document.querySelector("img[alt='first_sinner']"));
-    if (player_data["defeatedBroodMother"]) toggle_ability(document.querySelector("img[alt='broodmother']"));
-    if (player_data["defeatedTrobbio"]) toggle_ability(document.querySelector("img[alt='trobbio']"));
-    if (player_data["defeatedCogworkDancers"]) toggle_ability(document.querySelector("img[alt='cogwork_dancers']"));
-    if (player_data["defeatedLaceTower"]) toggle_ability(document.querySelector("img[alt='lace2']"));
-    if (player_data["wardBossDefeated"]) toggle_ability(document.querySelector("img[alt='unravelled']"));
-    if (player_data["cog7_automaton_defeated"]) toggle_ability(document.querySelector("img[alt='sentinel']"));
-    if (player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Garmond_Zaza") != null) toggle_ability(document.querySelector("img[alt='garmond_zaza']"));
-    //#endregion
-    //#region Act3/
-    if (player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Giant Centipede") != null) toggle_ability(document.querySelector("img[alt='bell_eater']"));
-    if (player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Mossbone Mother")["Record"]["Kills"] == 4) toggle_ability(document.querySelector("img[alt='moss_mother3']"));
-    if (player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Mossbone Mother")["Record"]["Kills"] == 2) toggle_ability(document.querySelector("img[alt='moss_mother3']"));
-    if (player_data["defeatedAntQueen"]) toggle_ability(document.querySelector("img[alt='karmelita']"));
-    if (player_data["defeatedAntTrapper"]) toggle_ability(document.querySelector("img[alt='gurr']"));
-    if (player_data["defeatedCrowCourt"]) toggle_ability(document.querySelector("img[alt='crawfather']"));
-    if (player_data["defeatedSeth"]) toggle_ability(document.querySelector("img[alt='seth']"));
-    if (player_data["defeatedFlowerQueen"]) toggle_ability(document.querySelector("img[alt='nyleth']"));
-    if (player_data["defeatedCoralKing"]) toggle_ability(document.querySelector("img[alt='khann']"));
-    if (player_data["defeatedGreyWarrior"]) toggle_ability(document.querySelector("img[alt='watcher_at_the_edge']"));
-    if (player_data["defeatedTormentedTrobbio"]) toggle_ability(document.querySelector("img[alt='tormented_trobbio']"));
-    if (player_data["defeatedWhiteCloverstag"]) toggle_ability(document.querySelector("img[alt='palestag']"));
-    if (player_data["defeatedCloverDancers"]) toggle_ability(document.querySelector("img[alt='clover_dancers']"));
-    if (player_data["defeatedSongChevalierBoss"]) toggle_ability(document.querySelector("img[alt='pinstress']"));
-    if (player_data["BlueScientistDead"]) toggle_ability(document.querySelector("img[alt='zango']"));
-    if (player_data["garmondBlackThreadDefeated"]) toggle_ability(document.querySelector("img[alt='lost_garmond']"));
-    if (player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Lost Lace") != null) toggle_ability(document.querySelector("img[alt='lost_lace']"));
-    if (player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Abyss Mass") != null) toggle_ability(document.querySelector("img[alt='summoned_saviour']"));
-    //#endregion
+        div.appendChild(button);
+    });
 }
 function update_wishes() {
     document.querySelectorAll(".wish-bottom-text").forEach(obj => {
@@ -309,6 +286,51 @@ function update_wishes() {
 
         switch_wish_state(obj, state);
     });
+}
+function update_value(details, obj) {
+    if (details["type"] == "pd_bool") {
+        player_data[details["key"]] = !player_data[details["key"]];
+    }
+    else if (details["type"] == "collectable") {
+        const collectable_data = {
+            Name: details["key"],
+            Data: {
+                Amount: 1,
+                IsSeenMask: 1,
+                AmountWhileHidden: 0
+            }
+        };
+
+        update_list(player_data["Collectables"]["savedData"], details, collectable_data);
+    }
+    else if (details["type"] == "journal") {
+        const journal_data = {
+            Name: details["key"],
+            Record: {
+                Kills: 1,
+                HasBeenSeen: 1
+            }
+        };
+
+        update_list(player_data["EnemyJournalKillData"]["list"], details, journal_data);
+    }
+    console.log(player_data);
+    if (details["type"] != "custom") {
+        toggle_ui(obj.querySelector("img"));
+        return;
+    }
+
+
+}
+
+function update_list(list, details, new_value) {
+    const item = list.find(item => item["Name"] == details["key"]);
+    if (item != null) {
+        list.splice(list.indexOf(item), 1);
+    }
+    else {
+        list.push(new_value);
+    }
 }
 
 function change_spools(amount) {
@@ -344,19 +366,7 @@ function on_rosaries_change(obj) {
     player_data["geo"] = obj.value;
 }
 
-function toggle_item(obj) {
-    if (obj == null) return;
-
-    if (obj.style.webkitFilter == "grayscale(0)") {
-        obj.style.webkitFilter = "grayscale(1)";
-        obj.parentNode.style.backgroundColor = "#101418";
-    }
-    else {
-        obj.style.webkitFilter = "grayscale(0)";
-        obj.parentNode.style.backgroundColor = "#474e55";
-    }
-}
-function toggle_ability(obj) {
+function toggle_ui(obj) {
     if (obj == null) return;
     
     if (obj.style.webkitFilter == "grayscale(0)") {
@@ -369,382 +379,6 @@ function toggle_ability(obj) {
     }
 }
 
-function update_item(obj) {
-    obj = obj.querySelector("img");
-    key = obj.alt;
-
-    if (key == "architect_key") {
-        const architect_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Architect Key");
-        toggle_ability(obj);
-        architect_key["Data"]["Amount"] = architect_key["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "bellhome_key") {
-        const bellhome_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Belltown House Key");
-        toggle_ability(obj);
-        bellhome_key["Data"]["Amount"] = bellhome_key["Data"]["Amount"] == 0 ? 1  : 0;
-    }
-    else if (key == "dock_key") {
-        const dock_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Dock Key");
-        toggle_ability(obj);
-        dock_key["Data"]["Amount"] = dock_key["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "whiteward_key") {
-        const whiteward_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Key");
-        toggle_ability(obj);
-        whiteward_key["Data"]["Amount"] = whiteward_key["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "surgeons_key") {
-        const surgeons_key = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Ward Boss Key");
-        toggle_ability(obj);
-        surgeons_key["Data"]["Amount"] = surgeons_key["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-
-    else if (key == "key_apostate") {
-        toggle_ability(obj);
-        player_data["HasSlabKeyC"] = player_data["HasSlabKeyC"] == true ? false : true;
-    }
-    else if (key == "key_heretic") {
-        toggle_ability(obj);
-        player_data["HasSlabKeyB"] = player_data["HasSlabKeyB"] == true ? false : true;
-    }
-    else if (key == "key_indolent") {
-        toggle_ability(obj);
-        player_data["HasSlabKeyA"] = player_data["HasSlabKeyA"] == true ? false : true;
-    }
-
-    else if (key == "heart_ant") {
-        const heart_hunter = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Hunter Heart");
-        toggle_ability(obj);
-        heart_hunter["Data"]["Amount"] = heart_hunter["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "heart_coral") {
-        const heart_coral = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Coral Heart");
-        toggle_ability(obj);
-        heart_coral["Data"]["Amount"] = heart_coral["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "heart_flower") {
-        const heart_flower = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Flower Heart");
-        toggle_ability(obj);
-        heart_flower["Data"]["Amount"] = heart_flower["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "heart_prince") {
-        const heart_clover = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Clover Heart");
-        toggle_ability(obj);
-        heart_clover["Data"]["Amount"] = heart_clover["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-
-    else if (key == "melody_architect") {
-        toggle_ability(obj);
-        player_data["HasMelodyArchitect"] = player_data["HasMelodyArchitect"] == true ? false : true;
-    }
-    else if (key == "melody_conductor") {
-        toggle_ability(obj);
-        player_data["HasMelodyConductor"] = player_data["HasMelodyConductor"] == true ? false : true;
-    }
-    else if (key == "melody_valutkeeper") {
-        toggle_ability(obj);
-        player_data["HasMelodyLibrarian"] = player_data["HasMelodyLibrarian"] == true ? false : true;
-    }
-
-    else if (key == "craw_summons") {
-        const craw_summons = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Craw Summons");
-        toggle_ability(obj);
-        craw_summons["Data"]["Amount"] = craw_summons["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "everbloom") {
-        const everbloom = player_data["Collectables"]["savedData"].find(item => item["Name"] == "White Flower");
-        toggle_ability(obj);
-        everbloom["Data"]["Amount"] = everbloom["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "farsight") {
-        const farsight = player_data["Collectables"]["savedData"].find(item => item["Name"] == "Farsight");
-        toggle_ability(obj);
-        farsight["Data"]["Amount"] = farsight["Data"]["Amount"] == 0 ? 1 : 0;
-    }
-    else if (key == "quill") {
-        player_data["QuillState"] += 1;
-        if (player_data["QuillState"] == 4) {
-            player_data["hasQuill"] = false;
-            player_data["QuillState"] = 0;
-            obj.src = "resources/items/quill1.png";
-            toggle_ability(obj);
-        }
-        else {
-            obj.src = "resources/items/quill" + player_data["QuillState"] + ".png";
-        }
-        if (player_data["QuillState"] == 1) {
-            player_data["hasQuill"] = true;
-            toggle_ability(obj);
-        }
-    }
-}
-function update_ability(obj) {
-    obj = obj.querySelector("img");
-    key = obj.alt;
-
-    if (key == "swift_step") {
-        toggle_ability(obj);
-        player_data["hasDash"] = player_data["hasDash"] == true ? false : true;
-    }
-    else if (key == "drifters_cloak") {
-        toggle_ability(obj);
-        player_data["hasBrolly"] = player_data["hasBrolly"] == true ? false : true;
-    }
-    else if (key == "cling_grip") {
-        toggle_ability(obj);
-        player_data["hasWalljump"] = player_data["hasWalljump"] == true ? false : true;
-    }
-    else if (key == "needolin") {
-        toggle_ability(obj);
-        player_data["hasNeedolin"] = player_data["hasNeedolin"] == true ? false : true;
-    }
-    else if (key == "needle_strike") {
-        toggle_ability(obj);
-        player_data["hasChargeSlash"] = player_data["hasChargeSlash"] == true ? false : true;
-    }
-    else if (key == "clawline") {
-        toggle_ability(obj);
-        player_data["hasHarpoonDash"] = player_data["hasHarpoonDash"] == true ? false : true;
-    }
-    else if (key == "beastling_call") {
-        toggle_ability(obj);
-        player_data["UnlockedFastTravelTeleport"] = player_data["UnlockedFastTravelTeleport"] == true ? false : true;
-    }
-    else if (key == "elegy") {
-        toggle_ability(obj);
-        player_data["hasNeedolinMemoryPowerup"] = player_data["hasNeedolinMemoryPowerup"] == true ? false : true;
-    }
-    else if (key == "silksoar") {
-        toggle_ability(obj);
-        player_data["hasSuperJump"] = player_data["hasSuperJump"] == true ? false : true;
-    }
-    else if (key == "sylphsong") {
-        toggle_ability(obj);
-        player_data["HasBoundCrestUpgrader"] = player_data["HasBoundCrestUpgrader"] == true ? false : true;
-    }
-}
-function update_boss(obj) {
-    obj = obj.querySelector("img");
-    key = obj.alt;
-
-    //#region Act1
-    if (key == "moss_mother") {
-        player_data["defeatedMossMother"] = player_data["defeatedMossMother"] == true ? false : true;
-    }
-    else if (key == "moss_mother2") {
-        record = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Mossbone Mother")["Record"]
-        if (record["Kills"] == 4) {
-            record["Kills"] = 2;
-        }
-        else if (record["Kills"] == 2) {
-            record["Kills"] = 4;
-        }
-    }
-    else if (key == "skull_tyrant") {
-        player_data["skullKingDefeated"] = player_data["skullKingDefeated"] == true ? false : true;
-    }
-    else if (key == "skull_tyrant2") {
-        player_data["skullKingKilled"] = player_data["skullKingKilled"] == true ? false : true;
-    }
-    else if (key == "bell_beast") {
-        player_data["defeatedBellBeast"] = player_data["defeatedBellBeast"] == true ? false : true;
-    }
-    else if (key == "lace") {
-        player_data["defeatedLace1"] = player_data["defeatedLace1"] == true ? false : true;
-    }
-    else if (key == "fourth_chorus") {
-        player_data["defeatedSongGolem"] = player_data["defeatedSongGolem"] == true ? false : true;
-    }
-    else if (key == "savage_beastfly") {
-        player_data["defeatedBoneFlyerGiant"] = player_data["defeatedBoneFlyerGiant"] == true ? false : true;
-    }
-    else if (key == "savage_beastfly2") {
-        player_data["defeatedBoneFlyerGiantGolemScene"] = player_data["defeatedBoneFlyerGiantGolemScene"] == true ? false : true;
-    }
-    else if (key == "moorwing") {
-        player_data["defeatedVampireGnatBoss"] = player_data["defeatedVampireGnatBoss"] == true ? false : true;
-    }
-    else if (key == "widow") {
-        player_data["spinnerDefeated"] = player_data["spinnerDefeated"] == true ? false : true;
-    }
-    else if (key == "sister_splinter") {
-        player_data["defeatedSplinterQueen"] = player_data["defeatedSplinterQueen"] == true ? false : true;
-    }
-    else if (key == "conchflies") {
-        player_data["defeatedCoralDrillers"] = player_data["defeatedCoralDrillers"] == true ? false : true;
-    }
-    else if (key == "phantom") {
-        player_data["defeatedPhantom"] = player_data["defeatedPhantom"] == true ? false : true;
-    }
-    else if (key == "last_judge") {
-        player_data["defeatedLastJudge"] = player_data["defeatedLastJudge"] == true ? false : true;
-    }
-    //#endregion
-    //#region Act2
-    else if (key == "forebrothers") {
-        player_data["defeatedDockForemen"] = player_data["defeatedDockForemen"] == true ? false : true;
-    }
-    else if (key == "father_of_the_flame") {
-        player_data["defeatedWispPyreEffigy"] = player_data["defeatedWispPyreEffigy"] == true ? false : true;
-    }
-    else if (key == "lugoli") {
-        player_data["defeatedRoachkeeperChef"] = player_data["defeatedRoachkeeperChef"] == true ? false : true;
-    }
-    else if (key == "groal") {
-        player_data["DefeatedSwampShaman"] = player_data["DefeatedSwampShaman"] == true ? false : true;
-    }
-    else if (key == "voltwyrm") {
-        player_data["defeatedZapCoreEnemy"] = player_data["defeatedZapCoreEnemy"] == true ? false : true;
-    }
-    else if (key == "conchfly") {
-        player_data["defeatedCoralDrillerSolo"] = player_data["defeatedCoralDrillerSolo"] == true ? false : true;
-    }
-    else if (key == "first_sinner") {
-        player_data["defeatedFirstWeaver"] = player_data["defeatedFirstWeaver"] == true ? false : true;
-    }
-    else if (key == "broodmother") {
-        player_data["defeatedBroodMother"] = player_data["defeatedBroodMother"] == true ? false : true;
-    }
-    else if (key == "trobbio") {
-        player_data["defeatedTrobbio"] = player_data["defeatedTrobbio"] == true ? false : true;
-    }
-    else if (key == "cogwork_dancers") {
-        player_data["defeatedCogworkDancers"] = player_data["defeatedCogworkDancers"] == true ? false : true;
-    }
-    else if (key == "lace2") {
-        player_data["defeatedLaceTower"] = player_data["defeatedLaceTower"] == true ? false : true;
-    }
-    else if (key == "unravelled") {
-        player_data["wardBossDefeated"] = player_data["wardBossDefeated"] == true ? false : true;
-    }
-    else if (key == "sentinel") {
-        player_data["cog7_automaton_defeated"] = player_data["cog7_automaton_defeated"] == true ? false : true;
-    }
-    else if (key == "garmond_zaza") {
-        const entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Garmond_Zaza");
-        if (entry != null) {
-            player_data["EnemyJournalKillData"]["list"].splice(player_data["EnemyJournalKillData"]["list"].indexOf(entry), 1);
-        }
-        else {
-            const jsonEntry = {
-                Name: "Garmond_Zaza",
-                Record: {
-                    Kills: 1,
-                    HasBeenSeen: true
-                },
-            };
-            player_data["EnemyJournalKillData"]["list"].push(jsonEntry);
-        }
-    }
-    //#endregion
-    //#region Act3
-    else if (key == "bell_eater") {
-        const entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Giant Centipede");
-        if (entry != null) {
-            player_data["EnemyJournalKillData"]["list"].splice(player_data["EnemyJournalKillData"]["list"].indexOf(entry), 1);
-        }
-        else {
-            const jsonEntry = {
-                Name: "Giant Centipede",
-                Record: {
-                    Kills: 1,
-                    HasBeenSeen: true
-                },
-            };
-            player_data["EnemyJournalKillData"]["list"].push(jsonEntry);
-        }
-    }
-    else if (key == "moss_mother3") {
-        record = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Mossbone Mother")["Record"]
-        if (record["Kills"] == 2) {
-            record["Kills"] = 1;
-        }
-        else if (record["Kills"] == 4) {
-            record["Kills"] = 3;
-        }
-        else if (record["Kills"] == 1) {
-            record["Kills"] = 2;
-        }
-        else if (record["Kills"] == 3) {
-            record["Kills"] = 4;
-        }
-    }
-    else if (key == "karmelita") {
-        player_data["defeatedAntQueen"] = player_data["defeatedAntQueen"] == true ? false : true;
-    }
-    else if (key == "gurr") {
-        player_data["defeatedAntTrapper"] = player_data["defeatedAntTrapper"] == true ? false : true;
-    }
-    else if (key == "crawfather") {
-        player_data["defeatedCrowCourt"] = player_data["defeatedCrowCourt"] == true ? false : true;
-    }
-    else if (key == "seth") {
-        player_data["defeatedSeth"] = player_data["defeatedSeth"] == true ? false : true;
-    }
-    else if (key == "nyleth") {
-        player_data["defeatedFlowerQueen"] = player_data["defeatedFlowerQueen"] == true ? false : true;
-    }
-    else if (key == "khann") {
-        player_data["defeatedCoralKing"] = player_data["defeatedCoralKing"] == true ? false : true;
-    }
-    else if (key == "watcher_at_the_edge") {
-        player_data["defeatedGreyWarrior"] = player_data["defeatedGreyWarrior"] == true ? false : true;
-    }
-    else if (key == "palestag") {
-        player_data["defeatedWhiteCloverstag"] = player_data["defeatedWhiteCloverstag"] == true ? false : true;
-    }
-    else if (key == "clover_dancers") {
-        player_data["defeatedCloverDancers"] = player_data["defeatedCloverDancers"] == true ? false : true;
-    }
-    else if (key == "pinstress") {
-        player_data["defeatedSongChevalierBoss"] = player_data["defeatedSongChevalierBoss"] == true ? false : true;
-    }
-    else if (key == "zango") {
-        player_data["BlueScientistDead"] = player_data["BlueScientistDead"] == true ? false : true;
-    }
-    else if (key == "tormented_trobbio") {
-        player_data["defeatedTormentedTrobbio"] = player_data["defeatedTormentedTrobbio"] == true ? false : true;
-    }
-    else if (key == "lost_garmond") {
-        player_data["garmondBlackThreadDefeated"] = player_data["garmondBlackThreadDefeated"] == true ? false : true;
-    }
-    else if (key == "lost_lace") {
-        const entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Lost Lace");
-        if (entry != null) {
-            player_data["EnemyJournalKillData"]["list"].splice(player_data["EnemyJournalKillData"]["list"].indexOf(entry), 1);
-        }
-        else {
-            const jsonEntry = {
-                Name: "Lost Lace",
-                Record: {
-                    Kills: 1,
-                    HasBeenSeen: true
-                },
-            };
-            player_data["EnemyJournalKillData"]["list"].push(jsonEntry);
-        }
-    }
-    else if (key == "summoned_saviour") {
-        const entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == "Abyss Mass");
-        if (entry != null) {
-            player_data["EnemyJournalKillData"]["list"].splice(player_data["EnemyJournalKillData"]["list"].indexOf(entry), 1);
-        }
-        else {
-            const jsonEntry = {
-                Name: "Abyss Mass",
-                Record: {
-                    Kills: 1,
-                    HasBeenSeen: true
-                },
-            };
-            player_data["EnemyJournalKillData"]["list"].push(jsonEntry);
-        }
-    }
-    //#endregion
-
-    console.log(player_data);
-    toggle_ability(obj);
-}
 function update_wish(obj) {
     obj = obj.querySelector("img");
     key = obj.alt;
@@ -782,7 +416,9 @@ function update_wish(obj) {
     switch_wish_state(obj);
 }
 
-function switchTab(btn, path, reload_id) {
+function switchTab(btn, reload_id) {
+    document.querySelector(".misc-container-content").innerHTML = "";
+
     document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
     btn.classList.add("tab-button-selected");
 
@@ -790,19 +426,13 @@ function switchTab(btn, path, reload_id) {
     underline.style.left = btn.offsetLeft + "px";
     underline.style.width = btn.offsetWidth + "px";
 
-    fetch("tabs/" + path + ".html")
-        .then(res => res.text())
-        .then(html => {
-        document.querySelector(".misc-container-content").innerHTML = html;
-
-        if (reload_id == "items") update_items();
-        else if (reload_id == "abilities") update_abilities();
-        else if (reload_id == "bosses") update_bosses();
-        else if (reload_id == "wishes") update_wishes();
-        else if (reload_id == "collectables") {
-            createMap();
-        }
-    });
+    if (reload_id == "items") create_base_ui(items);
+    else if (reload_id == "abilities") create_base_ui(abilities);
+    else if (reload_id == "bosses") create_base_ui(bosses);
+    else if (reload_id == "wishes") update_wishes();
+    else if (reload_id == "collectables") {
+        createMap();
+    }
 }
 
 function createMap() {
@@ -975,4 +605,4 @@ function update_mask_shard(popup, amount) {
     // update_masks();
 }
 
-switchTab(document.querySelector(".tab-button"), "misc/items");
+switchTab(document.querySelector(".tab-button"), "items");
