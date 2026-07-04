@@ -306,3 +306,12 @@ body {
 .hide {
     display: none !important;
 }
+
+.leaflet-popup-content-wrapper {
+    background: none;
+    color: #fff;
+    box-shadow: none;
+}
+.leaflet-popup-tip {
+    background: none;
+}

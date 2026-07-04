@@ -311,28 +311,6 @@ function update_wishes() {
     });
 }
 
-function change_masks(amount) {
-    player_data["heartPieces"] += amount;
-    if (player_data["heartPieces"] == 4) {
-        player_data["maxHealth"] += 1;
-        player_data["heartPieces"] = 0;
-    }
-    else if (player_data["heartPieces"] == -1) {
-        player_data["maxHealth"] -= 1;
-        player_data["heartPieces"] = 3;
-    }
-
-    if (player_data["maxHealth"] == 0) {
-        player_data["maxHealth"] = 1;
-        player_data["heartPieces"] = 0;
-    }
-    if (player_data["maxHealth"] == 10 && player_data["heartPieces"] > 0) {
-        player_data["maxHealth"] = 10;
-        player_data["heartPieces"] = 0;
-    }
-
-    update_masks();
-}
 function change_spools(amount) {
     player_data["silkSpoolParts"] += amount;
     if (player_data["silkSpoolParts"] == 2) {
@@ -846,7 +824,9 @@ function createMap() {
     });
     mask_shards.forEach(e => {
         const marker = L.marker(e[0], {icon}).addTo(map);
-        marker.bindPopup(e[1]);
+        marker.bindPopup(e[1], {
+            closeButton: false
+        });
 
         marker.on("mouseover", () => {
             marker.openPopup();
@@ -858,6 +838,7 @@ function createMap() {
         marker.on("click", (e) => {
             L.DomEvent.stopPropagation(e);
             marker.getElement().classList.toggle("grey");
+            update_mask_shard(marker.getPopup());
         });
     });
 
@@ -947,6 +928,51 @@ function calculate_completion_percentage() {
     percentage += player_data["HasBoundCrestUpgrader"] ? 1 : 0;
     percentage += player_data["HasWhiteFlower"] ? 1 : 0;
     console.log(percentage);
+}
+
+function toggle_bool(bool, key) {
+    bool[key] = !bool[key];
+}
+
+function update_mask_shard(popup, amount) {
+    // player_data["heartPieces"] += amount;
+    // if (player_data["heartPieces"] == 4) {
+    //     player_data["maxHealth"] += 1;
+    //     player_data["heartPieces"] = 0;
+    // }
+    // else if (player_data["heartPieces"] == -1) {
+    //     player_data["maxHealth"] -= 1;
+    //     player_data["heartPieces"] = 3;
+    // }
+
+    // if (player_data["maxHealth"] == 0) {
+    //     player_data["maxHealth"] = 1;
+    //     player_data["heartPieces"] = 0;
+    // }
+    // if (player_data["maxHealth"] == 10 && player_data["heartPieces"] > 0) {
+    //     player_data["maxHealth"] = 10;
+    //     player_data["heartPieces"] = 0;
+    // }
+
+    id = popup.getContent();
+    heart_pieces = scene_data["persistentBools"]["serializedList"].filter(item => item["ID"] == "Heart Piece");
+
+    if (id == "Above Seamtress") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Bone_East_20"), "Value");
+    if (id == "Marrow/Deep Docks Arena") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Dock_08"), "Value");
+    if (id == "Shellwood Center") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Shellwood_14"), "Value");
+    if (id == "Wormways Entrance") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Crawl_02"), "Value");
+    if (id == "Wavenest Atla Platforming") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Weave_05b"), "Value");
+    if (id == "After Cogwork Core Arena") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Song_09"), "Value");
+    if (id == "Mount Fay") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Peak_04c"), "Value");
+    if (id == "Skull Cave") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Bone_East_LavaChallenge"), "Value");
+    if (id == "After Moving Puzzle") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Library_05"), "Value");
+    if (id == "After Slubberlug Room") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Shadow_13"), "Value");
+    if (id == "The Slab") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Slab_17"), "Value");
+    if (id == "East Wisp Thicket") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Wisp_07"), "Value");
+    if (id == "Brightvein") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Peak_06"), "Value");
+    if (id == "Blasted Steps") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Coral_19b"), "Value");
+
+    // update_masks();
 }
 
 switchTab(document.querySelector(".tab-button"), "misc/items");
