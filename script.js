@@ -142,6 +142,59 @@ const bosses = [
     { key: "garmondBlackThreadDefeated", type: "pd_bool", label: "Lost Garmond", img: "resources/bosses/act3/lost_garmond.png" },
     { key: "Lost Lace", type: "journal", label: "Lost Lace", img: "resources/bosses/act3/lost_lace.png" }
 ];
+const wishes = [
+    { key: "Pilgrim Rags", type: "wish", label: "Garb of the Pilgrims", img: "resources/wishes/hunt.png" },
+    { key: "Mossberry Collection 1", type: "wish", label: "Berry Picking", img: "resources/wishes/gather.png" },
+    { key: "Save the Fleas", type: "wish", label: "The Lost Fleas", img: "resources/wishes/wayfarer.png" },
+    { key: "Brolly Get", type: "wish", label: "Flexile Spines", img: "resources/wishes/hunt.png" },
+    { key: "Journal", type: "wish", label: "Bugs of Pharloom", img: "resources/wishes/hunters_journal.png" },
+    { key: "Rock Rollers", type: "wish", label: "Volitile Flintbeetles", img: "resources/wishes/hunt.png" },
+    { key: "Skull King", type: "wish", label: "The Terrible Tyrant", img: "resources/wishes/grand_hunt.png" },
+    { key: "Building Materials", type: "wish", label: "Bone Bottom Repairs", img: "resources/wishes/donate.png" },
+    { key: "Shell Flowers", type: "wish", label: "Rite of the Pollip", img: "resources/wishes/gather.png" },
+    { key: "A Pinsmiths Tools", type: "wish", label: "Pinmaster's Oil", img: "resources/wishes/wayfarer.png" },
+    { key: "Save Courier Short", type: "wish", label: "My Missing Courier", img: "resources/wishes/wayfarer.png" },
+    { key: "Shiny Bell Goomba", type: "wish", label: "Silver Bells", img: "resources/wishes/gather.png" },
+    { key: "Crow Feathers", type: "wish", label: "Crawbug Clearing", img: "resources/wishes/hunt.png" },
+    { key: "Building Materials (Bridge)", type: "wish", label: "A Lifesaving Bridge", img: "resources/wishes/donate.png" },
+    { key: "Belltown House Start", type: "wish", label: "Restoration of Bellhart", img: "resources/wishes/donate.png" },
+    { key: "Extractor Blue", type: "wish", label: "Alchemist's Assistant", img: "resources/wishes/gather.png" },
+    { key: "Steel Sentinel Pt2", type: "wish", label: "A Vassal Lost", img: "resources/wishes/steel_soul.png" },
+    { key: "Building Materials (Statue)", type: "wish", label: "An Icon of Hope", img: "resources/wishes/donate.png" },
+    { key: "Belltown House Mid", type: "wish", label: "Bellhart's Glory", img: "resources/wishes/donate.png" },
+    { key: "Courier Delivery Bonebottom", type: "wish", label: "Bone Bottom Supplies", img: "resources/wishes/delivery.png" },
+    { key: "Courier Delivery Pilgrims Rest", type: "wish", label: "Pilgrim's Rest Supplies", img: "resources/wishes/delivery.png" },
+    { key: "Courier Delivery Dustpens Slave", type: "wish", label: "Queen's Egg", img: "resources/wishes/delivery.png" },
+    { key: "Beastfly Hunt", type: "wish", label: "Savage Beastfly", img: "resources/wishes/grand_hunt.png" },
+    { key: "Save Courier Tall", type: "wish", label: "My Missing Brother", img: "resources/wishes/wayfarer.png" },
+    { key: "Save Sherma", type: "wish", label: "Balm for the Wounded", img: "resources/wishes/wayfarer.png" },
+    { key: "Save City Merchant", type: "wish", label: "The Wandering Merchant", img: "resources/wishes/wayfarer.png" },
+    { key: "Fine Pins", type: "wish", label: "Fine Pins", img: "resources/wishes/hunt.png" },
+    { key: "Songclave Donation 1", type: "wish", label: "Building Up Songclave", img: "resources/wishes/donate.png" },
+    { key: "Courier Delivery Songclave", type: "wish", label: "Songclave Supplies", img: "resources/wishes/delivery.png" },
+    { key: "Song Pilgrim Cloaks", type: "wish", label: "Cloaks of the Choir", img: "resources/wishes/hunt.png" },
+    { key: "Save City Merchant Bridge", type: "wish", label: "The Lost Merchant", img: "resources/wishes/wayfarer.png" },
+    { key: "Great Gourmand", type: "wish", label: "Great Tase of Pharloom", img: "resources/wishes/gather.png" },
+    { key: "Wood Witch Curse", type: "wish", label: "Rite of Rebirth", img: "resources/wishes/wayfarer.png" },
+    { key: "Songclave Donation 2", type: "wish", label: "Strengthening Songclave", img: "resources/wishes/donate.png" },
+    { key: "Doctor Curse Cure", type: "wish", label: "Infestation Operation", img: "resources/wishes/wayfarer.png" },
+    { key: "Huntress Quest", type: "wish", label: "Broodfeast", img: "resources/wishes/hunt.png" },
+    { key: "Broodmother Hunt", type: "wish", label: "The Wailing Mother", img: "resources/wishes/grand_hunt.png" },
+    { key: "Shakra Final Quest", type: "wish", label: "Trail's End", img: "resources/wishes/wayfarer.png" },
+    { key: "Courier Delivery Fleatopia", type: "wish", label: "Fleatopia Supplies", img: "resources/wishes/delivery.png" },
+    { key: "Song Knight", type: "wish", label: "Final Audience", img: "resources/wishes/wayfarer.png" },
+    { key: "Soul Snare", type: "wish", label: "Silk and Soul", img: "resources/wishes/wayfarer.png" },
+    { key: "Destroy Thread Cores", type: "wish", label: "Dark Hearts", img: "resources/wishes/hunt.png" },
+    { key: "Huntress Quest Runt", type: "wish", label: "Runtfeast", img: "resources/wishes/grand_hunt.png" },
+    { key: "Sprintmaster Race", type: "wish", label: "Fastest in Pharloom", img: "resources/wishes/sprint.png" },
+    { key: "Mr Mushroom", type: "wish", label: "Passing of the Age", img: "resources/wishes/mr_mushroom.png" },
+    { key: "Pinstress Battle", type: "wish", label: "Fatal Resolve", img: "resources/wishes/wayfarer.png" },
+    { key: "Extractor Blue Worms", type: "wish", label: "Advanced Alchemy", img: "resources/wishes/gather.png" },
+    { key: "Tormented Trobbio", type: "wish", label: "Pain, Anguish and Misery", img: "resources/wishes/wayfarer.png" },
+    { key: "Garmond Black Threaded", type: "wish", label: "Hero's Call", img: "resources/wishes/wayfarer.png" },
+    { key: "Ant Trapper", type: "wish", label: "The Hidden Hunter", img: "resources/wishes/grand_hunt.png" },
+    { key: "Flea Games", type: "wish", label: "Ecstasy of the End", img: "resources/wishes/wayfarer.png" }
+];
 
 const C_SHARP_HEADER = new Uint8Array([
     0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF,
@@ -296,6 +349,33 @@ function create_base_ui(tab) {
         div.appendChild(button);
     });
 }
+function create_wish_ui() {
+    const ui_template = `
+    <div class="boss-img">
+        <img src="">
+    </div>
+    <p class="wish-top-text"></p>
+    <p class="wish-bottom-text"></p>
+    `;
+
+    const div = document.createElement("div");
+    div.classList.add("ability-container");
+    misc_tab_contaner.appendChild(div);
+
+    wishes.forEach(item => {
+        const button = document.createElement("button");
+        button.classList.add("ability");
+        button.style.height = "250px";
+        button.addEventListener("click", () => update_value(item, button));
+        button.innerHTML = ui_template;
+        button.querySelector("img").src = item["img"];
+        button.querySelector(".wish-top-text").innerHTML = item["label"];
+        button.querySelector(".wish-bottom-text").innerHTML = "Uncollected";
+
+        div.appendChild(button);
+    });
+}
+
 function update_wishes() {
     document.querySelectorAll(".wish-bottom-text").forEach(obj => {
         obj = obj.parentNode.querySelector("img")
@@ -349,8 +429,42 @@ function update_value(details, obj) {
     else if (details["type"] == "sceneData") {
         
     }
-    console.log(player_data);
-    if (details["type"] != "custom") {
+    else if (details["type"] == "wish") {
+        questTemplate = {
+            Name: "",
+            Data: {
+                HasBeenSeen: true,
+                IsAccepted: true,
+                CompletedCount: 0,
+                IsCompleted: false,
+                WasEverCompleted: false
+            }
+        };
+
+        quest = get_quest(details["key"]);
+        if (quest == null) {
+            questTemplate["Name"] = details["key"];
+            player_data["QuestCompletionData"]["savedData"].push(questTemplate);
+            switch_wish_state(obj);
+            return;
+        }
+        else if (quest["Data"]["IsAccepted"] && !quest["Data"]["IsCompleted"]) {
+            switch_wish_state(obj);
+            quest["Data"]["IsCompleted"] = true;
+            return;
+        }
+        else {
+            delete_quest(quest);
+        }
+        delete_quest(get_quest(details["key"] + " Pre"));
+        delete_quest(get_quest("Sprintmaster Pre"));
+        delete_quest(get_quest("Mossberry Collection Pre"));
+
+        switch_wish_state(obj);
+    }
+
+    if (details["type"] != "custom" && details["type"] != "wish") {
+        console.log("hello")
         toggle_ui(obj.querySelector("img"));
         return;
     }
@@ -452,7 +566,7 @@ function update_wish(obj) {
 }
 
 function switchTab(btn, reload_id) {
-    // document.querySelector(".misc-container-content").innerHTML = "";
+    document.querySelector(".misc-container-content").innerHTML = "";
 
     document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
     btn.classList.add("tab-button-selected");
@@ -464,7 +578,7 @@ function switchTab(btn, reload_id) {
     if (reload_id == "items") create_base_ui(items);
     else if (reload_id == "abilities") create_base_ui(abilities);
     else if (reload_id == "bosses") create_base_ui(bosses);
-    else if (reload_id == "wishes") update_wishes();
+    else if (reload_id == "wishes") create_wish_ui();
     else if (reload_id == "collectables") {
         createMap();
     }
@@ -553,23 +667,21 @@ function delete_quest(quest) {
 }
 
 function switch_wish_state(obj, state) {
-    bottom_text = obj.parentNode.parentNode.querySelector(".wish-bottom-text");
+    bottom_text = obj.querySelector(".wish-bottom-text");
     if (bottom_text.innerHTML == "Completed" || state == 0) {
-        obj.style.webkitFilter = "grayscale(1)";
-        obj.parentNode.parentNode.style.backgroundColor = "#101418";
+        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(1)";
+        obj.style.backgroundColor = "#101418";
         bottom_text.innerHTML = "Uncollected";
         return;
     }
     if (bottom_text.innerHTML == "Collected" || state == 2) {
+    obj.style.backgroundColor = "#474e55";
         bottom_text.innerHTML = "Completed";
     }
     if (bottom_text.innerHTML == "Uncollected" || state == 1) {
+        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(0)";
         bottom_text.innerHTML = "Collected";
     }
-    
-    
-    obj.style.webkitFilter = "grayscale(0)";
-    obj.parentNode.parentNode.style.backgroundColor = "#474e55";
 }
 
 function calculate_completion_percentage() {
@@ -645,4 +757,4 @@ function update_mask_shard(popup, amount) {
     // update_masks();
 }
 
-switchTab(document.querySelector(".tab-button"), "collectables");
+switchTab(document.querySelector(".tab-button"), "items");
