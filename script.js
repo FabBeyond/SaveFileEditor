@@ -349,7 +349,6 @@ function create_base_ui(tab) {
 
         div.appendChild(button);
 
-        // console.log(is_gotten(item));
         toggle_ui(button.querySelector("img"), is_gotten(item));
     });
 }
@@ -377,32 +376,31 @@ function create_wish_ui() {
         button.querySelector(".wish-bottom-text").innerHTML = "Uncollected";
 
         div.appendChild(button);
+
+        check_wish(item, button.querySelector("img"));
     });
 }
 
-function update_wishes() {
-    document.querySelectorAll(".wish-bottom-text").forEach(obj => {
-        obj = obj.parentNode.querySelector("img")
+function check_wish(details, obj) {
+    state = 0;
+    quest = get_quest(details["key"]);
+    if (quest != null) {
+        if (quest["Data"]["IsAccepted"]) state = 1;
+        if (quest["Data"]["IsCompleted"]) state = 2;
 
-        state = 0;
-        quest = get_quest(obj.alt);
-        if (quest != null) {
-            if (quest["Data"]["IsAccepted"]) state = 1;
-            if (quest["Data"]["IsCompleted"]) state = 2;
+        switch_wish_state(obj.parentNode.parentNode, state);
+        return;
+    }
 
-            switch_wish_state(obj, state);
-            return;
-        }
+    quest2 = get_quest(obj.alt + " Pre");
+    if (quest2 != null) {
+        if (quest2["Data"]["IsAccepted"]) state = 1;
+        if (quest2["Data"]["IsCompleted"]) state = 2;
+    }
 
-        quest2 = get_quest(obj.alt + " Pre");
-        if (quest2 != null) {
-            if (quest2["Data"]["IsAccepted"]) state = 1;
-            if (quest2["Data"]["IsCompleted"]) state = 2;
-        }
-
-        switch_wish_state(obj, state);
-    });
+    switch_wish_state(obj.parentNode.parentNode, state);
 }
+
 function update_value(details, obj) {
     if (details["type"] == "pd_bool") {
         player_data[details["key"]] = !player_data[details["key"]];
@@ -454,11 +452,11 @@ function update_value(details, obj) {
         if (quest == null) {
             questTemplate["Name"] = details["key"];
             player_data["QuestCompletionData"]["savedData"].push(questTemplate);
-            switch_wish_state(obj);
+            switch_wish_state(obj, get_next_wish_state(obj));
             return;
         }
         else if (quest["Data"]["IsAccepted"] && !quest["Data"]["IsCompleted"]) {
-            switch_wish_state(obj);
+            switch_wish_state(obj, get_next_wish_state(obj));
             quest["Data"]["IsCompleted"] = true;
             return;
         }
@@ -469,7 +467,7 @@ function update_value(details, obj) {
         delete_quest(get_quest("Sprintmaster Pre"));
         delete_quest(get_quest("Mossberry Collection Pre"));
 
-        switch_wish_state(obj);
+        switch_wish_state(obj, get_next_wish_state(obj));
     }
 }
 
@@ -500,9 +498,6 @@ function is_gotten(details) {
         return player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]) != null;
     }
     else if (details["type"] == "sceneData") {
-        
-    }
-    else if (details["type"] == "wish") {
         
     }
 }
@@ -541,8 +536,6 @@ function on_rosaries_change(obj) {
 }
 
 function toggle_ui(obj, state) {
-
-    console.log(state);
     if (obj == null) return;
     
     if (!state) {
@@ -693,21 +686,28 @@ function delete_quest(quest) {
     quests.splice(quests.indexOf(quest), 1);
 }
 
+function get_next_wish_state(obj) {
+    text = obj.querySelector(".wish-bottom-text").innerHTML;
+    if (text == "Uncollected") return 1;
+    if (text == "Collected") return 2;
+    if (text == "Completed") return 0;
+}
+
 function switch_wish_state(obj, state) {
     bottom_text = obj.querySelector(".wish-bottom-text");
-    if (bottom_text.innerHTML == "Completed" || state == 0) {
+    if (state == 0) {
         obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(1)";
         obj.style.backgroundColor = "#101418";
         bottom_text.innerHTML = "Uncollected";
-        return;
     }
-    if (bottom_text.innerHTML == "Collected" || state == 2) {
-    obj.style.backgroundColor = "#474e55";
-        bottom_text.innerHTML = "Completed";
-    }
-    if (bottom_text.innerHTML == "Uncollected" || state == 1) {
+    if (state == 1) {
         obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(0)";
         bottom_text.innerHTML = "Collected";
+    }
+    if (state == 2) {
+        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(0)";
+        obj.style.backgroundColor = "#474e55";
+        bottom_text.innerHTML = "Completed";
     }
 }
 
@@ -736,7 +736,6 @@ function calculate_completion_percentage() {
     percentage += player_data["hasChargeSlash"] ? 1 : 0;
     percentage += player_data["HasBoundCrestUpgrader"] ? 1 : 0;
     percentage += player_data["HasWhiteFlower"] ? 1 : 0;
-    console.log(percentage);
 }
 
 function toggle_bool(bool, key) {
