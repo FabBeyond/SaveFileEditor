@@ -563,7 +563,7 @@ function toggle_ui(obj, state) {
 
 function switchTab(btn, reload_id) {
     if (player_data == null) return;
-    
+
     document.querySelector(".misc-container-content").innerHTML = "";
 
     document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
@@ -643,6 +643,15 @@ function switch_wish_state(obj, state) {
 
 //#region Map
 function createMap() {
+    const ui = `
+    <div id="map" class="map-container" style="width: 100%; height: 100%;">
+        <button class="map-fullscreen-button" onclick="expand_map()"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></i></button>
+        <button class="map-smaller-button" onclick="shrink_map()"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></i></button>
+    </div>
+    `;
+
+    misc_tab_contaner.innerHTML = ui;
+
     map = L.map("map", {
         crs: L.CRS.Simple,
         minZoom: -3,
@@ -714,4 +723,4 @@ function shrink_map() {
 }
 //#endregion
 
-document.querySelector(".misc-container-content").innerHTML = "";
+// document.querySelector(".misc-container-content").innerHTML = "";
