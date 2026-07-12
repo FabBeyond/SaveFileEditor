@@ -1,3 +1,4 @@
+//#region vars
 const AES_KEY = "UKu52ePUBwetZ9wNX88o54dnfKRu0T1l";
 let player_data;
 let scene_data;
@@ -202,7 +203,9 @@ const C_SHARP_HEADER = new Uint8Array([
     0x00, 0x06, 0x01, 0x00, 0x00, 0x00
 ]);
 const END_BYTE = new Uint8Array([0x0B]);
+//#endregion
 
+//#region Save File Functions
 function csharp_length(len) {
     const values = [];
     for (let i = 0; i < 4; i++) {
@@ -294,113 +297,35 @@ function download_save_file() {
     a.download = "save.dat";
     a.click();
 }
+function calculate_completion_percentage() {
+    percentage = 0;
+    percentage += player_data["Tools"]["savedData"].filter(item => item["Data"]["IsHidden"] == false).length;
+    player_data["ToolEquips"]["savedData"].forEach(element => {
+        if (element["Name"] == "Hunter_v3") percentage -= 2;
+        else if (element["Name"] == "Hunter_v2") percentage--;
+        if (["Cloakless", "Cursed"].includes(element["Name"])) percentage--;
 
-function update_resources() {
-    const resources = document.querySelectorAll(".resources-entry input");
-    resources[0].value = player_data["geo"];
-    resources[1].value = player_data["ShellShards"];
-    document.querySelector(".shell-shards-cap").innerHTML = "/ " + (player_data["ToolPouchUpgrades"] * 100 + 400);
-}
-
-function update_masks() {
-    const images = document.querySelectorAll(".masks > img");
-    for (let i = 0; i < images.length; i++) {
-        const element = images[i];
-        if (i+1 <= player_data["maxHealth"]) {
-            element.src = "resources/resources/mask_full.png";
-        }
-        else {
-            element.src = "resources/resources/mask" + player_data["heartPieces"] + ".png"
-            break;
-        }
-    }
-}
-function update_spools() {
-    const images = document.querySelectorAll(".spools > img");
-    for (let i = 0; i < images.length; i++) {
-        const element = images[i];
-        if (i+1 <= player_data["silkMax"]-9) {
-            element.src = "resources/resources/spool_full.png";
-        }
-        else {
-            element.src = "resources/resources/spool" + player_data["silkSpoolParts"] + ".png"
-            break;
-        }
-    }
-}
-function create_base_ui(tab) {
-    const ui_template = `
-    <div class="boss-img">
-        <img src="">
-    </div>
-    <p></p>`;
-
-    const div = document.createElement("div");
-    div.classList.add("ability-container");
-    misc_tab_contaner.appendChild(div);
-
-    tab.forEach(item => {
-        const button = document.createElement("button");
-        button.classList.add("ability");
-        button.addEventListener("click", () => update_value(item, button));
-        button.innerHTML = ui_template;
-        button.querySelector("img").src = item["img"];
-        button.querySelector("p").innerHTML = item["label"];
-
-        div.appendChild(button);
-
-        toggle_ui(button.querySelector("img"), is_gotten(item));
+        percentage++;
     });
+    
+    percentage += player_data["nailUpgrades"];
+    percentage += player_data["ToolKitUpgrades"];
+    percentage += player_data["ToolPouchUpgrades"];
+    percentage += player_data["silkRegenMax"];
+    percentage += player_data["maxHealthBase"] - 5;
+    percentage += player_data["silkMax"] - 9;
+    percentage += player_data["hasNeedolin"] ? 1 : 0;
+    percentage += player_data["hasDash"] ? 1 : 0;
+    percentage += player_data["hasWalljump"] ? 1 : 0;
+    percentage += player_data["hasHarpoonDash"] ? 1 : 0;
+    percentage += player_data["hasSuperJump"] ? 1 : 0;
+    percentage += player_data["hasChargeSlash"] ? 1 : 0;
+    percentage += player_data["HasBoundCrestUpgrader"] ? 1 : 0;
+    percentage += player_data["HasWhiteFlower"] ? 1 : 0;
 }
-function create_wish_ui() {
-    const ui_template = `
-    <div class="boss-img">
-        <img src="">
-    </div>
-    <p class="wish-top-text"></p>
-    <p class="wish-bottom-text"></p>
-    `;
+//#endregion
 
-    const div = document.createElement("div");
-    div.classList.add("ability-container");
-    misc_tab_contaner.appendChild(div);
-
-    wishes.forEach(item => {
-        const button = document.createElement("button");
-        button.classList.add("ability");
-        button.style.height = "250px";
-        button.addEventListener("click", () => update_value(item, button));
-        button.innerHTML = ui_template;
-        button.querySelector("img").src = item["img"];
-        button.querySelector(".wish-top-text").innerHTML = item["label"];
-        button.querySelector(".wish-bottom-text").innerHTML = "Uncollected";
-
-        div.appendChild(button);
-
-        check_wish(item, button.querySelector("img"));
-    });
-}
-
-function check_wish(details, obj) {
-    state = 0;
-    quest = get_quest(details["key"]);
-    if (quest != null) {
-        if (quest["Data"]["IsAccepted"]) state = 1;
-        if (quest["Data"]["IsCompleted"]) state = 2;
-
-        switch_wish_state(obj.parentNode.parentNode, state);
-        return;
-    }
-
-    quest2 = get_quest(obj.alt + " Pre");
-    if (quest2 != null) {
-        if (quest2["Data"]["IsAccepted"]) state = 1;
-        if (quest2["Data"]["IsCompleted"]) state = 2;
-    }
-
-    switch_wish_state(obj.parentNode.parentNode, state);
-}
-
+//#region General Functions
 function update_value(details, obj) {
     if (details["type"] == "pd_bool") {
         player_data[details["key"]] = !player_data[details["key"]];
@@ -501,7 +426,41 @@ function is_gotten(details) {
         
     }
 }
+//#endregion
 
+//#region Resources
+function update_resources() {
+    const resources = document.querySelectorAll(".resources-entry input");
+    resources[0].value = player_data["geo"];
+    resources[1].value = player_data["ShellShards"];
+    document.querySelector(".shell-shards-cap").innerHTML = "/ " + (player_data["ToolPouchUpgrades"] * 100 + 400);
+}
+function update_masks() {
+    const images = document.querySelectorAll(".masks > img");
+    for (let i = 0; i < images.length; i++) {
+        const element = images[i];
+        if (i+1 <= player_data["maxHealth"]) {
+            element.src = "resources/resources/mask_full.png";
+        }
+        else {
+            element.src = "resources/resources/mask" + player_data["heartPieces"] + ".png"
+            break;
+        }
+    }
+}
+function update_spools() {
+    const images = document.querySelectorAll(".spools > img");
+    for (let i = 0; i < images.length; i++) {
+        const element = images[i];
+        if (i+1 <= player_data["silkMax"]-9) {
+            element.src = "resources/resources/spool_full.png";
+        }
+        else {
+            element.src = "resources/resources/spool" + player_data["silkSpoolParts"] + ".png"
+            break;
+        }
+    }
+}
 function change_spools(amount) {
     player_data["silkSpoolParts"] += amount;
     if (player_data["silkSpoolParts"] == 2) {
@@ -524,7 +483,6 @@ function change_spools(amount) {
 
     update_spools();
 }
-
 function on_shell_shard_change(obj) {
     if (obj.value > player_data["ToolPouchUpgrades"] * 100 + 400) {
         obj.value = player_data["ToolPouchUpgrades"] * 100 + 400;
@@ -533,6 +491,61 @@ function on_shell_shard_change(obj) {
 }
 function on_rosaries_change(obj) {
     player_data["geo"] = obj.value;
+}
+//#endregion
+
+//#region UI
+function create_base_ui(tab) {
+    const ui_template = `
+    <div class="boss-img">
+        <img src="">
+    </div>
+    <p></p>`;
+
+    const div = document.createElement("div");
+    div.classList.add("ability-container");
+    misc_tab_contaner.appendChild(div);
+
+    tab.forEach(item => {
+        const button = document.createElement("button");
+        button.classList.add("ability");
+        button.addEventListener("click", () => update_value(item, button));
+        button.innerHTML = ui_template;
+        button.querySelector("img").src = item["img"];
+        button.querySelector("p").innerHTML = item["label"];
+
+        div.appendChild(button);
+
+        toggle_ui(button.querySelector("img"), is_gotten(item));
+    });
+}
+function create_wish_ui() {
+    const ui_template = `
+    <div class="boss-img">
+        <img src="">
+    </div>
+    <p class="wish-top-text"></p>
+    <p class="wish-bottom-text"></p>
+    `;
+
+    const div = document.createElement("div");
+    div.classList.add("ability-container");
+    misc_tab_contaner.appendChild(div);
+
+    wishes.forEach(item => {
+        const button = document.createElement("button");
+        button.classList.add("ability");
+        button.style.height = "250px";
+        button.addEventListener("click", () => update_value(item, button));
+        button.innerHTML = ui_template;
+        button.querySelector("img").src = item["img"];
+        button.querySelector(".wish-top-text").innerHTML = item["label"];
+        button.querySelector(".wish-bottom-text").innerHTML = "Uncollected";
+
+        div.appendChild(button);
+
+        check_wish(item, button.querySelector("img"));
+    });
 }
 
 function toggle_ui(obj, state) {
@@ -546,43 +559,6 @@ function toggle_ui(obj, state) {
         obj.style.webkitFilter = "grayscale(0)";
         obj.parentNode.parentNode.style.backgroundColor = "#474e55";
     }
-}
-
-function update_wish(obj) {
-    obj = obj.querySelector("img");
-    key = obj.alt;
-
-    questTemplate = {
-        Name: "",
-        Data: {
-            HasBeenSeen: true,
-            IsAccepted: true,
-            CompletedCount: 0,
-            IsCompleted: false,
-            WasEverCompleted: false
-        }
-    };
-
-    quest = get_quest(key);
-    if (quest == null) {
-        questTemplate["Name"] = key;
-        player_data["QuestCompletionData"]["savedData"].push(questTemplate);
-        switch_wish_state(obj);
-        return;
-    }
-    else if (quest["Data"]["IsAccepted"] && !quest["Data"]["IsCompleted"]) {
-        switch_wish_state(obj);
-         quest["Data"]["IsCompleted"] = true;
-         return;
-    }
-    else {
-        delete_quest(quest);
-    }
-    delete_quest(get_quest(key + " Pre"));
-    delete_quest(get_quest("Sprintmaster Pre"));
-    delete_quest(get_quest("Mossberry Collection Pre"));
-
-    switch_wish_state(obj);
 }
 
 function switchTab(btn, reload_id) {
@@ -603,7 +579,67 @@ function switchTab(btn, reload_id) {
         createMap();
     }
 }
+//#endregion
 
+//#region Wishes
+function check_wish(details, obj) {
+    state = 0;
+    quest = get_quest(details["key"]);
+    if (quest != null) {
+        if (quest["Data"]["IsAccepted"]) state = 1;
+        if (quest["Data"]["IsCompleted"]) state = 2;
+
+        switch_wish_state(obj.parentNode.parentNode, state);
+        return;
+    }
+
+    quest2 = get_quest(obj.alt + " Pre");
+    if (quest2 != null) {
+        if (quest2["Data"]["IsAccepted"]) state = 1;
+        if (quest2["Data"]["IsCompleted"]) state = 2;
+    }
+
+    switch_wish_state(obj.parentNode.parentNode, state);
+}
+
+function get_quest(name) {
+    return player_data["QuestCompletionData"]["savedData"].find(item => item["Name"] == name);
+}
+
+function delete_quest(quest) {
+    if (quest == null) return;
+
+    quests = player_data["QuestCompletionData"]["savedData"];
+    quests.splice(quests.indexOf(quest), 1);
+}
+
+function get_next_wish_state(obj) {
+    text = obj.querySelector(".wish-bottom-text").innerHTML;
+    if (text == "Uncollected") return 1;
+    if (text == "Collected") return 2;
+    if (text == "Completed") return 0;
+}
+
+function switch_wish_state(obj, state) {
+    bottom_text = obj.querySelector(".wish-bottom-text");
+    if (state == 0) {
+        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(1)";
+        obj.style.backgroundColor = "#101418";
+        bottom_text.innerHTML = "Uncollected";
+    }
+    if (state == 1) {
+        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(0)";
+        bottom_text.innerHTML = "Collected";
+    }
+    if (state == 2) {
+        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(0)";
+        obj.style.backgroundColor = "#474e55";
+        bottom_text.innerHTML = "Completed";
+    }
+}
+//#endregion
+
+//#region Map
 function createMap() {
     map = L.map("map", {
         crs: L.CRS.Simple,
@@ -674,113 +710,6 @@ function shrink_map() {
     document.querySelector(".map-fullscreen-button").classList.toggle("hide");
     document.querySelector(".map-smaller-button").classList.toggle("hide");
 }
-
-function get_quest(name) {
-    return player_data["QuestCompletionData"]["savedData"].find(item => item["Name"] == name);
-}
-
-function delete_quest(quest) {
-    if (quest == null) return;
-
-    quests = player_data["QuestCompletionData"]["savedData"];
-    quests.splice(quests.indexOf(quest), 1);
-}
-
-function get_next_wish_state(obj) {
-    text = obj.querySelector(".wish-bottom-text").innerHTML;
-    if (text == "Uncollected") return 1;
-    if (text == "Collected") return 2;
-    if (text == "Completed") return 0;
-}
-
-function switch_wish_state(obj, state) {
-    bottom_text = obj.querySelector(".wish-bottom-text");
-    if (state == 0) {
-        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(1)";
-        obj.style.backgroundColor = "#101418";
-        bottom_text.innerHTML = "Uncollected";
-    }
-    if (state == 1) {
-        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(0)";
-        bottom_text.innerHTML = "Collected";
-    }
-    if (state == 2) {
-        obj.querySelector(".boss-img img").style.webkitFilter = "grayscale(0)";
-        obj.style.backgroundColor = "#474e55";
-        bottom_text.innerHTML = "Completed";
-    }
-}
-
-function calculate_completion_percentage() {
-    percentage = 0;
-    percentage += player_data["Tools"]["savedData"].filter(item => item["Data"]["IsHidden"] == false).length;
-    player_data["ToolEquips"]["savedData"].forEach(element => {
-        if (element["Name"] == "Hunter_v3") percentage -= 2;
-        else if (element["Name"] == "Hunter_v2") percentage--;
-        if (["Cloakless", "Cursed"].includes(element["Name"])) percentage--;
-
-        percentage++;
-    });
-    
-    percentage += player_data["nailUpgrades"];
-    percentage += player_data["ToolKitUpgrades"];
-    percentage += player_data["ToolPouchUpgrades"];
-    percentage += player_data["silkRegenMax"];
-    percentage += player_data["maxHealthBase"] - 5;
-    percentage += player_data["silkMax"] - 9;
-    percentage += player_data["hasNeedolin"] ? 1 : 0;
-    percentage += player_data["hasDash"] ? 1 : 0;
-    percentage += player_data["hasWalljump"] ? 1 : 0;
-    percentage += player_data["hasHarpoonDash"] ? 1 : 0;
-    percentage += player_data["hasSuperJump"] ? 1 : 0;
-    percentage += player_data["hasChargeSlash"] ? 1 : 0;
-    percentage += player_data["HasBoundCrestUpgrader"] ? 1 : 0;
-    percentage += player_data["HasWhiteFlower"] ? 1 : 0;
-}
-
-function toggle_bool(bool, key) {
-    bool[key] = !bool[key];
-}
-
-function update_mask_shard(popup, amount) {
-    // player_data["heartPieces"] += amount;
-    // if (player_data["heartPieces"] == 4) {
-    //     player_data["maxHealth"] += 1;
-    //     player_data["heartPieces"] = 0;
-    // }
-    // else if (player_data["heartPieces"] == -1) {
-    //     player_data["maxHealth"] -= 1;
-    //     player_data["heartPieces"] = 3;
-    // }
-
-    // if (player_data["maxHealth"] == 0) {
-    //     player_data["maxHealth"] = 1;
-    //     player_data["heartPieces"] = 0;
-    // }
-    // if (player_data["maxHealth"] == 10 && player_data["heartPieces"] > 0) {
-    //     player_data["maxHealth"] = 10;
-    //     player_data["heartPieces"] = 0;
-    // }
-
-    id = popup.getContent();
-    heart_pieces = scene_data["persistentBools"]["serializedList"].filter(item => item["ID"] == "Heart Piece");
-
-    if (id == "Above Seamtress") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Bone_East_20"), "Value");
-    if (id == "Marrow/Deep Docks Arena") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Dock_08"), "Value");
-    if (id == "Shellwood Center") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Shellwood_14"), "Value");
-    if (id == "Wormways Entrance") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Crawl_02"), "Value");
-    if (id == "Wavenest Atla Platforming") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Weave_05b"), "Value");
-    if (id == "After Cogwork Core Arena") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Song_09"), "Value");
-    if (id == "Mount Fay") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Peak_04c"), "Value");
-    if (id == "Skull Cave") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Bone_East_LavaChallenge"), "Value");
-    if (id == "After Moving Puzzle") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Library_05"), "Value");
-    if (id == "After Slubberlug Room") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Shadow_13"), "Value");
-    if (id == "The Slab") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Slab_17"), "Value");
-    if (id == "East Wisp Thicket") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Wisp_07"), "Value");
-    if (id == "Brightvein") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Peak_06"), "Value");
-    if (id == "Blasted Steps") toggle_bool(heart_pieces.find(item => item["SceneName"] == "Coral_19b"), "Value");
-
-    // update_masks();
-}
+//#endregion
 
 document.querySelector(".misc-container-content").innerHTML = "";
