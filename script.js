@@ -27,6 +27,26 @@ const mask_shards = [
     { map_location: [1622.2164481713319, 2324.092811202475], label: "Dark Hearts Wish", key: "Destroy Thread Cores", type: "wish-map" },
     { map_location: [1645.722924294319, 2335.5974924692664], label: "Hidden Hunter Wish", key: "Ant Trapper", type: "wish-map" }
 ];
+const spool_fragments = [
+    { map_location: [1272.175662375497, 1428.4582047191896], label: "Top of Bone Bottom", key: "Bone_11b", type: "sceneData", id: "Silk Spool" },
+    { map_location: [965.7219597653636, 2885.952455925918], label: "West Deep Docks Parkour Room", key: "Bone_East_13", type: "sceneData", id: "Silk Spool" },
+    { map_location: [1942.518050470454, 3897.982908992977], label: "Greymoor above Shakra Bench", key: "Greymoor_02", type: "sceneData", id: "Silk Spool" },
+    { map_location: [1617.7124522656588, 2365.456184872905], label: "Bought from Frey", key: "PurchasedBelltownSpoolSegment", type: "pd_bool" },
+    { map_location: [962.1749734262431, 1331.0299869486857], label: "Weavenest Atla", key: "Weave_11", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2948.76991063344, 1346.4100391539434], label: "The Slab Outside", key: "Peak_01", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2494.732431794024, 1878.937695510762], label: "Top of Grand Gate", key: "Song_19_entrance", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2255.70046454864, 2593.445464150318], label: "Underworks after Enemy Arena", key: "Under_10", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2344.1831030274398, 1689.9288392616684], label: "Blasted Steps Flea Caravan", key: "CaravanTroupeLocation", type: "custom" },
+    { map_location: [2537.223751033424, 2615.437540137971], label: "Whiteward below Elevator", key: "Ward_01", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2809.449431124759, 2971.8203890534687], label: "Bottom Right Cogwork Core", key: "Cog_07", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2240.234360851935, 3124.9258871786374], label: "Bottom Right Underworks", key: "Library_11b", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2594.2553049092553, 2866.9448426591534], label: "After Sherma Rescue", key: "Save Sherma", type: "wish" },
+    { map_location: [3062.7236132435733, 3434.4726543887637], label: "Bought by Jubilana", key: "MerchantEnclaveSpoolPiece", type: "pd_bool" },
+    { map_location: [973.2216841856621, 3692.37896459572], label: "South East Deep Docks", key: "Dock_03c", type: "sceneData", id: "Silk Spool" },
+    { map_location: [3506.509783079406, 2384.7691160324002], label: "Top of High Halls", key: "Hang_03_top", type: "sceneData", id: "Silk Spool" },
+    { map_location: [3170.256269438211, 2916.4311698535353], label: "Left Side of Memorium", key: "Arborium_09", type: "sceneData", id: "Silk Spool" },
+    { map_location: [2303.2471753080586, 902.9745188622569], label: "Bought from Grindle", key: "purchasedGrindleSpoolPiece", type: "pd_bool" }
+];
 const fleas = [
     { label: "The Marrow", key: "SavedFlea_Bone_06", type: "pd_bool", map_location: [1466.930782826843, 1853.9751290953118] },
     { label: "Deep Docks Bellway", key: "SavedFlea_Dock_16", type: "pd_bool", map_location: [1094.947288899025, 2660.4543425620677] },
@@ -438,7 +458,7 @@ function is_gotten(details) {
         return player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]) != null;
     }
     else if (details["type"] == "sceneData") {
-        return scene_data["persistentBools"]["serializedList"].find(item => item["SceneName"] == details["key"] && item["ID"] == details["id"])["Value"] == true;
+        return scene_data["persistentBools"]["serializedList"].find(item => item["SceneName"] == details["key"] && item["ID"] == details["id"])?.["Value"] == true;
     }
     else if (details["type"].startsWith("wish")) {
         state = 0;
@@ -700,6 +720,7 @@ function createMap() {
     map.on("click", e => console.log(e.latlng));
 
     create_markers(mask_shards, "resources/collectables/mask_icon.png");
+    create_markers(spool_fragments, "resources/collectables/spool_icon.png");
     create_markers(fleas, "resources/collectables/flea_icon.png");
 
     document.querySelector(".map-smaller-button").classList.toggle("hide");
