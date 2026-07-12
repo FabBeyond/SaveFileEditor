@@ -562,6 +562,8 @@ function toggle_ui(obj, state) {
 }
 
 function switchTab(btn, reload_id) {
+    if (player_data == null) return;
+    
     document.querySelector(".misc-container-content").innerHTML = "";
 
     document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("tab-button-selected"));
