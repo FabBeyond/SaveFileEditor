@@ -232,6 +232,7 @@ document.getElementById("fileinput").addEventListener("change", async (e) => {
 
     console.log(save_data);
     calculate_completion_percentage();
+    switchTab(document.querySelector(".tab-button"), "items");
 });
 function decrypt_save_file(arrayBuffer) {
     const bytes = new Uint8Array(arrayBuffer);
@@ -347,6 +348,9 @@ function create_base_ui(tab) {
         button.querySelector("p").innerHTML = item["label"];
 
         div.appendChild(button);
+
+        // console.log(is_gotten(item));
+        toggle_ui(button.querySelector("img"), is_gotten(item));
     });
 }
 function create_wish_ui() {
@@ -402,6 +406,7 @@ function update_wishes() {
 function update_value(details, obj) {
     if (details["type"] == "pd_bool") {
         player_data[details["key"]] = !player_data[details["key"]];
+        toggle_ui(obj.querySelector("img"), player_data[details["key"]]);
     }
     else if (details["type"] == "collectable") {
         const collectable_data = {
@@ -412,8 +417,10 @@ function update_value(details, obj) {
                 AmountWhileHidden: 0
             }
         };
-
+        
         update_list(player_data["Collectables"]["savedData"], details, collectable_data);
+
+        toggle_ui(obj.querySelector("img"), is_gotten(details));
     }
     else if (details["type"] == "journal") {
         const journal_data = {
@@ -425,6 +432,8 @@ function update_value(details, obj) {
         };
 
         update_list(player_data["EnemyJournalKillData"]["list"], details, journal_data);
+
+        toggle_ui(obj.querySelector("img"), is_gotten(details));
     }
     else if (details["type"] == "sceneData") {
         
@@ -462,23 +471,39 @@ function update_value(details, obj) {
 
         switch_wish_state(obj);
     }
-
-    if (details["type"] != "custom" && details["type"] != "wish") {
-        console.log("hello")
-        toggle_ui(obj.querySelector("img"));
-        return;
-    }
-
-
 }
 
 function update_list(list, details, new_value) {
     const item = list.find(item => item["Name"] == details["key"]);
     if (item != null) {
-        list.splice(list.indexOf(item), 1);
+        if (item["Data"]["Amount"] > 0) {
+            list.splice(list.indexOf(item), 1);
+        }
+        else {
+            list.splice(list.indexOf(item), 1);
+            list.push(new_value);
+        }
     }
     else {
         list.push(new_value);
+    }
+}
+
+function is_gotten(details) {
+    if (details["type"] == "pd_bool") {
+        return player_data[details["key"]] == true;
+    }
+    else if (details["type"] == "collectable") {
+        return player_data["Collectables"]["savedData"].find(item => item["Name"] == details["key"] && item["Data"]["Amount"] != 0) != null;
+    }
+    else if (details["type"] == "journal") {
+        return player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]) != null;
+    }
+    else if (details["type"] == "sceneData") {
+        
+    }
+    else if (details["type"] == "wish") {
+        
     }
 }
 
@@ -515,10 +540,12 @@ function on_rosaries_change(obj) {
     player_data["geo"] = obj.value;
 }
 
-function toggle_ui(obj) {
+function toggle_ui(obj, state) {
+
+    console.log(state);
     if (obj == null) return;
     
-    if (obj.style.webkitFilter == "grayscale(0)") {
+    if (!state) {
         obj.style.webkitFilter = "grayscale(1)";
         obj.parentNode.parentNode.style.backgroundColor = "#101418";
     }
@@ -757,4 +784,4 @@ function update_mask_shard(popup, amount) {
     // update_masks();
 }
 
-switchTab(document.querySelector(".tab-button"), "items");
+document.querySelector(".misc-container-content").innerHTML = "";
