@@ -6,27 +6,26 @@ let map;
 const misc_tab_contaner = document.querySelector(".misc-container-content");
 
 const mask_shards = [
-    { map_location: [1136.7087319396874, 1351.9879915330132], label: "Bought from Plebb", key: "", type: "" },
-    { map_location: [2302.271150742097, 902.5156720670847], label: "Bought from Grindle", key: "", type: "" },
+    { map_location: [1136.7087319396874, 1351.9879915330132], label: "Bought from Plebb/Grindle", key: "PurchasedBonebottomHeartPiece", type: "pd_bool" },
     { map_location: [1306.2001889689382, 856.0069201335178], label: "Wormways Entrance", key: "Crawl_02", type: "sceneData", id: "Heart Piece" },
     { map_location: [1160.1811739695288, 2653.974354799316], label: "Marrow/Deep Docks Arena", key: "Dock_08", type: "sceneData", id: "Heart Piece" },
     { map_location: [1107.6759379551986, 3961.4910445330943], label: "Above Seamstress", key: "Bone_East_20", type: "sceneData", id: "Heart Piece" },
     { map_location: [1787.4411637337112, 1914.9275421314012], label: "Shellwood Center", key: "Shellwood_14", type: "sceneData", id: "Heart Piece" },
     { map_location: [1000.1690484626589, 1856.940364731743], label: "Wavenest Atla Platforming", key: "Weave_05b", type: "sceneData", id: "Heart Piece" },
-    { map_location: [3049.4714775008856, 3429.128633070097], label: "Bought from Jubilana", key: "", type: "" },
+    { map_location: [3049.4714775008856, 3429.128633070097], label: "Bought from Jubilana", key: "MerchantEnclaveShellFragment", type: "pd_bool" },
     { map_location: [2993.9314161726106, 2556.732961329846], label: "After Cogwork Core Arena", key: "Song_09", type: "sceneData", id: "Heart Piece" },
     { map_location: [2845.4593519940163, 3519.1331108035497], label: "After Moving Puzzle", key: "Library_05", type: "sceneData", id: "Heart Piece" },
-    { map_location: [1620.192334947443, 2341.057192868192], label: "Savage Beastfly 2 Wish", key: "", type: "" },
-    { map_location: [1030.4541159796856, 4524.198241471953], label: "Skull Cave", key: "Bone_East_LavaChallenge", type: "sceneData", id: "Heart Piece" },
+    { map_location: [1620.192334947443, 2341.057192868192], label: "Savage Beastfly 2 Wish", key: "Beastfly Hunt", type: "wish-map" },
+    { map_location: [1030.4541159796856, 4524.198241471953], label: "Skull Cave", key: "Bone_East_LavaChallenge", type: "sceneData", id: "Heart Piece (1)" },
     { map_location: [2901.580607062714, 366.03663600097696], label: "Mount Fay", key: "Peak_04c", type: "sceneData", id: "Heart Piece" },
     { map_location: [3165.481693219036, 1619.1507100066403], label: "The Slab", key: "Slab_17", type: "sceneData", id: "Heart Piece" },
     { map_location: [2625.709696468643, 4628.57551086868], label: "After Slubberlug Room", key: "Shadow_13", type: "sceneData", id: "Heart Piece" },
     { map_location: [2077.469797201449, 3304.1752759721053], label: "East Wisp Thicket", key: "Wisp_07", type: "sceneData", id: "Heart Piece" },
     { map_location: [1988.7387701271605, 707.0177074004722], label: "Blasted Steps", key: "Coral_19b", type: "sceneData", id: "Heart Piece" },
     { map_location: [3147.4764379355142, 1071.1025808027355], label: "Brightvein", key: "Peak_06", type: "sceneData", id: "Heart Piece" },
-    { map_location: [1384.5278657648305, 4844.124780051003], label: "Sprintmaster Reward", key: "", type: "" },
-    { map_location: [1622.2164481713319, 2324.092811202475], label: "Dark Hearts Wish", key: "", type: "" },
-    { map_location: [1645.722924294319, 2335.5974924692664], label: "Hidden Hunter Wish", key: "", type: "" }
+    { map_location: [1384.5278657648305, 4844.124780051003], label: "Sprintmaster Reward", key: "Sprintmaster Race", type: "wish-map" },
+    { map_location: [1622.2164481713319, 2324.092811202475], label: "Dark Hearts Wish", key: "Destroy Thread Cores", type: "wish-map" },
+    { map_location: [1645.722924294319, 2335.5974924692664], label: "Hidden Hunter Wish", key: "Ant Trapper", type: "wish-map" }
 ];
 const fleas = [
     { label: "The Marrow", key: "SavedFlea_Bone_06", type: "pd_bool", map_location: [1466.930782826843, 1853.9751290953118] },
@@ -329,7 +328,9 @@ function calculate_completion_percentage() {
 function update_value(details, obj) {
     if (details["type"] == "pd_bool") {
         player_data[details["key"]] = !player_data[details["key"]];
-        toggle_ui(obj.querySelector("img"), player_data[details["key"]]);
+        if (obj != null) {
+            toggle_ui(obj.querySelector("img"), player_data[details["key"]]);
+        }
     }
     else if (details["type"] == "collectable") {
         const collectable_data = {
@@ -343,7 +344,9 @@ function update_value(details, obj) {
         
         update_list(player_data["Collectables"]["savedData"], details, collectable_data);
 
-        toggle_ui(obj.querySelector("img"), is_gotten(details));
+        if (obj != null) {
+            toggle_ui(obj.querySelector("img"), is_gotten(details));
+        }
     }
     else if (details["type"] == "journal") {
         const journal_data = {
@@ -356,12 +359,15 @@ function update_value(details, obj) {
 
         update_list(player_data["EnemyJournalKillData"]["list"], details, journal_data);
 
-        toggle_ui(obj.querySelector("img"), is_gotten(details));
+        if (obj != null) {
+            toggle_ui(obj.querySelector("img"), is_gotten(details));
+        }
     }
     else if (details["type"] == "sceneData") {
-        
+        value = scene_data["persistentBools"]["serializedList"].find(item => item["SceneName"] == details["key"] && item["ID"] == details["id"]);
+        value["Value"] = !value["Value"];
     }
-    else if (details["type"] == "wish") {
+    else if (details["type"].startsWith("wish")) {
         questTemplate = {
             Name: "",
             Data: {
@@ -376,12 +382,19 @@ function update_value(details, obj) {
         quest = get_quest(details["key"]);
         if (quest == null) {
             questTemplate["Name"] = details["key"];
+            if (obj != null) {
+                switch_wish_state(obj, get_next_wish_state(obj));
+            }
+            else {
+                questTemplate["Data"]["IsCompleted"] = true;
+            }
             player_data["QuestCompletionData"]["savedData"].push(questTemplate);
-            switch_wish_state(obj, get_next_wish_state(obj));
             return;
         }
         else if (quest["Data"]["IsAccepted"] && !quest["Data"]["IsCompleted"]) {
-            switch_wish_state(obj, get_next_wish_state(obj));
+            if (obj != null) {
+                switch_wish_state(obj, get_next_wish_state(obj));
+            }
             quest["Data"]["IsCompleted"] = true;
             return;
         }
@@ -392,7 +405,9 @@ function update_value(details, obj) {
         delete_quest(get_quest("Sprintmaster Pre"));
         delete_quest(get_quest("Mossberry Collection Pre"));
 
-        switch_wish_state(obj, get_next_wish_state(obj));
+        if (obj != null) {
+            switch_wish_state(obj, get_next_wish_state(obj));
+        }
     }
 }
 
@@ -423,7 +438,27 @@ function is_gotten(details) {
         return player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]) != null;
     }
     else if (details["type"] == "sceneData") {
-        
+        return scene_data["persistentBools"]["serializedList"].find(item => item["SceneName"] == details["key"] && item["ID"] == details["id"])["Value"] == true;
+    }
+    else if (details["type"].startsWith("wish")) {
+        state = 0;
+        quest = get_quest(details["key"]);
+        if (quest != null) {
+            if (quest["Data"]["IsAccepted"]) state = 1;
+            if (quest["Data"]["IsCompleted"]) state = 2;
+
+            return state == 2;
+        }
+
+        quest2 = get_quest(details["key"] + " Pre");
+        if (quest2 != null) {
+            if (quest2["Data"]["IsAccepted"]) state = 1;
+            if (quest2["Data"]["IsCompleted"]) state = 2;
+
+            return state == 2;
+        }
+
+        return false;
     }
 }
 //#endregion
@@ -595,7 +630,7 @@ function check_wish(details, obj) {
         return;
     }
 
-    quest2 = get_quest(obj.alt + " Pre");
+    quest2 = get_quest(details["key"] + " Pre");
     if (quest2 != null) {
         if (quest2["Data"]["IsAccepted"]) state = 1;
         if (quest2["Data"]["IsCompleted"]) state = 2;
@@ -693,6 +728,10 @@ function create_markers(list, icon_path) {
             marker.getElement().classList.toggle("grey");
             update_value(e);
         });
+
+        if (is_gotten(e)) {
+            marker.getElement().classList.toggle("grey");
+        }
     });
 }
 
@@ -723,4 +762,4 @@ function shrink_map() {
 }
 //#endregion
 
-// document.querySelector(".misc-container-content").innerHTML = "";
+document.querySelector(".misc-container-content").innerHTML = "";
