@@ -36,7 +36,7 @@ const spool_fragments = [
     { map_location: [2948.76991063344, 1346.4100391539434], label: "The Slab Outside", key: "Peak_01", type: "sceneData", id: "Silk Spool" },
     { map_location: [2494.732431794024, 1878.937695510762], label: "Top of Grand Gate", key: "Song_19_entrance", type: "sceneData", id: "Silk Spool" },
     { map_location: [2255.70046454864, 2593.445464150318], label: "Underworks after Enemy Arena", key: "Under_10", type: "sceneData", id: "Silk Spool" },
-    { map_location: [2344.1831030274398, 1689.9288392616684], label: "Blasted Steps Flea Caravan", key: "CaravanTroupeLocation", type: "custom" },
+    { map_location: [2344.1831030274398, 1689.9288392616684], label: "Blasted Steps Flea Caravan", key: "CaravanTroupeLocation", type: "caravan" },
     { map_location: [2537.223751033424, 2615.437540137971], label: "Whiteward below Elevator", key: "Ward_01", type: "sceneData", id: "Silk Spool" },
     { map_location: [2809.449431124759, 2971.8203890534687], label: "Bottom Right Cogwork Core", key: "Cog_07", type: "sceneData", id: "Silk Spool" },
     { map_location: [2240.234360851935, 3124.9258871786374], label: "Bottom Right Underworks", key: "Library_11b", type: "sceneData", id: "Silk Spool" },
@@ -111,11 +111,11 @@ const items = [
     { key: "Craw Summons", type: "collectable", label: "Craw Summons", img: "resources/items/craw_summons.png" },
     { key: "White Flower", type: "collectable", label: "Everbloom", img: "resources/items/everbloom.png" },
     { key: "Farsight", type: "collectable", label: "Farsight", img: "resources/items/farsight.png" },
-    { key: "quill", type: "custom", label: "Quill", img: "resources/items/quill1.png" }
+    { key: "quill", type: "quill", label: "Quill", img: "resources/items/quill1.png" }
 ];
 const bosses = [
     { key: "defeatedMossMother", type: "pd_bool", label: "Moss Mother", img: "resources/bosses/act1/moss_mother.png" },
-    { key: "moss_mother2", type: "custom", label: "Moss Mother 2", img: "resources/bosses/act1/moss_mother2.png" },
+    { key: "Mossbone Mother", type: "moss_mother2", label: "Moss Mother 2", img: "resources/bosses/act1/moss_mother2.png" },
     { key: "skullKingDefeated", type: "pd_bool", label: "Skull Tyrant", img: "resources/bosses/act1/skull_tyrant.png" },
     { key: "skullKingKilled", type: "pd_bool", label: "Skull Tyrant 2", img: "resources/bosses/act1/skull_tyrant.png" },
     { key: "defeatedBellBeast", type: "pd_bool", label: "Bell Beast", img: "resources/bosses/act1/bell_beast.png" },
@@ -146,7 +146,7 @@ const bosses = [
     { key: "Abyss Mass", type: "journal", label: "Summoned Saviour", img: "resources/bosses/act2/summoned_saviour.png" },
 
     { key: "Giant Centipede", type: "journal", label: "Bell Eater", img: "resources/bosses/act3/bell_eater.png" },
-    { key: "moss_mother3", type: "custom", label: "Moss Mother 3", img: "resources/bosses/act1/moss_mother.png" },
+    { key: "Mossbone Mother", type: "moss_mother3", label: "Moss Mother 3", img: "resources/bosses/act1/moss_mother.png" },
     { key: "defeatedAntQueen", type: "pd_bool", label: "Karmelita", img: "resources/bosses/act3/karmelita.png" },
     { key: "defeatedAntTrapper", type: "pd_bool", label: "Gurr", img: "resources/bosses/act3/gurr.png" },
     { key: "defeatedCrowCourt", type: "pd_bool", label: "Crawfather", img: "resources/bosses/act3/crawfather.png" },
@@ -429,6 +429,34 @@ function update_value(details, obj) {
             switch_wish_state(obj, get_next_wish_state(obj));
         }
     }
+    else if (details["type"] == "caravan") {
+        if (player_data[details["key"]] > 0) {
+            player_data[details["key"]] = 0;
+        }
+        else {
+            player_data[details["key"]] = 1;
+        }
+    }
+    else if (details["type"] == "quill") {
+        obj = obj.querySelector("img");
+        player_data["QuillState"] += 1;
+        if (player_data["QuillState"] == 4) {
+            player_data["hasQuill"] = false;
+            player_data["QuillState"] = 0;
+            obj.src = "resources/items/quill1.png";
+            toggle_ui(obj, false)
+        }
+        else {
+            obj.src = "resources/items/quill" + player_data["QuillState"] + ".png";
+        }
+        if (player_data["QuillState"] == 1) {
+            player_data["hasQuill"] = true;
+            toggle_ui(obj, true);
+        }
+    }
+    else if (details["type"] == "moss_mother2") {
+
+    }
 }
 
 function update_list(list, details, new_value) {
@@ -476,6 +504,28 @@ function is_gotten(details) {
             if (quest2["Data"]["IsCompleted"]) state = 2;
 
             return state == 2;
+        }
+
+        return false;
+    }
+    else if (details["type"] == "caravan") {
+        return player_data[details["key"]] > 0;
+    }
+    else if (details["type"] == "quill") {
+        return player_data["hasQuill"];
+    } //fix quill
+    else if (details["type"] == "moss_mother2") {
+        entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]);
+        if (entry) {
+            return entry["Record"]["Kills"] > 2;
+        }
+
+        return false;
+    }
+    else if (details["type"] == "moss_mother3") {
+        entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]);
+        if (entry) {
+            return [2, 4].includes(entry["Record"]["Kills"]);
         }
 
         return false;
