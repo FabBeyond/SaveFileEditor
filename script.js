@@ -79,7 +79,16 @@ const fleas = [
     { label: "East Songclave", key: "SavedFlea_Library_09", type: "pd_bool", map_location: [3094.913906152004, 3701.926043702774] },
     { label: "Whispering Vaults", key: "SavedFlea_Library_01", type: "pd_bool", map_location: [2935.941102685444, 3350.9772442162384] }
 ];
-
+const craftmetals = [
+    { map_location: [1132.1738711074368, 1339.9961008195637], label: "Bought from Pebb/Grindle", key: "PurchasedBonebottomToolMetal", type: "pd_bool"},
+    { map_location: [1312.483327428054, 2185], label: "Behind Exploding Wall", key: "Bone_07", type: "sceneData", id: "tool_metal_deposit" },
+    { map_location: [1017.7760798390756, 3484.8814747455267], label: "Right Deep Docks", key: "Dock_03", type: "sceneData", id: "City Shard Chest" },
+    { map_location: [2233.7080579026374, 1412.176075580266], label: "Blasted Steps", key: "Coral_32", type: "sceneData", id: "tool_metal_deposit" },
+    { map_location: [3058.19548241859, 3423.21630291354], label: "Bought from Jubilana", key: "MerchantEnclaveToolMetal", type: "pd_bool"},
+    { map_location: [2163.247927903197, 2706.685532999678], label: "Wisp Thicket", key: "Wisp_05", type: "sceneData", id: "tool_metal_deposit" },
+    { map_location: [2263.452127418683, 2816.442462855763], label: "Below Clawline", key: "Under_19b", type: "sceneData", id: "tool_metal_deposit" },
+    { map_location: [2997.725777902886, 5064.24201110997], label: "Right of Pale Lake", key: "Aqueduct_05", type: "sceneData", id: "tool_metal_deposit" }
+];
 const abilities = [
     { key: "hasDash", type: "pd_bool", label: "Swift Step", img: "resources/abilities/swift_step.png" },
     { key: "hasBrolly", type: "pd_bool", label: "Drifter's Cloak", img: "resources/abilities/drifters_cloak.png" },
@@ -771,6 +780,7 @@ function createMap() {
 
     create_markers(mask_shards, "resources/collectables/mask_icon.png");
     create_markers(spool_fragments, "resources/collectables/spool_icon.png");
+    create_markers(craftmetals, "resources/collectables/craftmetal_icon.png")
     create_markers(fleas, "resources/collectables/flea_icon.png");
 
     document.querySelector(".map-smaller-button").classList.toggle("hide");
