@@ -91,11 +91,10 @@ const craftmetals = [
 ];
 const tool_pouches = [
     {map_location: [1310.4075430101177, 3913], label: "Bought from Mort/Grindle", type: "pd_bool", key: "PurchasedPilgrimsRestToolPouch"},
-    {map_location: [1246.72306208417, 2343.5], label: "Loddie Game Reward", type: "pd_bool", key: "PurchasedBelltownToolPouch"},
+    {map_location: [1246.72306208417, 2343.5], label: "Loddie Game Reward", type: "sceneData", key: "Bone_12", id: "Ladybug Craft Pickup"},
     {map_location: [1774.2551671194046, 3244], label: "Bugs of Pharloom Wish", type: "wish-map", key: "Journal"},
     {map_location: [2998.7686705247825, 4739], label: "Move Caravan to Fleatopia", type: "caravan-fleatopia", key: "CaravanTroupeLocation"}
 ]
-
 const crafting_kits = [
     {map_location: [1049.1355655289162, 3065], type: "pd_bool", key: "PurchasedForgeToolKit"},
     {map_location: [1769.721133026259, 3220.5], type: "wish", key: "Crow Feathers"},
@@ -499,6 +498,26 @@ function update_value(details, obj) {
             toggle_ui(obj.querySelector("img"), false);
         }
     }
+    else if (details["type"].startsWith("caravan")) {
+        if (details["type"] == "caravan-bs") {
+            if (player_data[details["key"]] < 2) {
+                player_data[details["key"]] = 2;
+            }
+            else {
+                player_data[details["key"]] = 1;
+                document.getElementById("Move Caravan to Fleatopia").classList.add("grey");
+            }
+        }
+        else if (details["type"] == "caravan-fleatopia") {
+            if (player_data[details["key"]] < 3) {
+                player_data[details["key"]] = 3;
+                document.getElementById("Blasted Steps Flea Caravan").classList.remove("grey");
+            }
+            else {
+                player_data[details["key"]] = 2;
+            }
+        }
+    }
 }
 
 function update_list(list, details, new_value) {
@@ -571,6 +590,14 @@ function is_gotten(details) {
         }
 
         return false;
+    }
+    else if (details["type"].startsWith("caravan")) {
+        if (details["type"] == "caravan-bs") {
+            return player_data[details["key"]] >= 2;
+        }
+        else if (details["type"] == "caravan-fleatopia") {
+            return player_data[details["key"]] == 3;
+        }
     }
 }
 //#endregion
@@ -848,6 +875,7 @@ function create_markers(list, icon_path) {
         if (is_gotten(e)) {
             marker.getElement().classList.toggle("grey");
         }
+        marker.getElement().id = e["label"];
     });
 }
 
