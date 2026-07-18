@@ -36,7 +36,7 @@ const spool_fragments = [
     { map_location: [2948.76991063344, 1346.4100391539434], label: "The Slab Outside", key: "Peak_01", type: "sceneData", id: "Silk Spool" },
     { map_location: [2494.732431794024, 1878.937695510762], label: "Top of Grand Gate", key: "Song_19_entrance", type: "sceneData", id: "Silk Spool" },
     { map_location: [2255.70046454864, 2593.445464150318], label: "Underworks after Enemy Arena", key: "Under_10", type: "sceneData", id: "Silk Spool" },
-    { map_location: [2344.1831030274398, 1689.9288392616684], label: "Blasted Steps Flea Caravan", key: "CaravanTroupeLocation", type: "caravan" },
+    { map_location: [2344.1831030274398, 1689.9288392616684], label: "Blasted Steps Flea Caravan", key: "CaravanTroupeLocation", type: "caravan-bs" },
     { map_location: [2537.223751033424, 2615.437540137971], label: "Whiteward below Elevator", key: "Ward_01", type: "sceneData", id: "Silk Spool" },
     { map_location: [2809.449431124759, 2971.8203890534687], label: "Bottom Right Cogwork Core", key: "Cog_07", type: "sceneData", id: "Silk Spool" },
     { map_location: [2240.234360851935, 3124.9258871786374], label: "Bottom Right Underworks", key: "Library_11b", type: "sceneData", id: "Silk Spool" },
@@ -89,6 +89,20 @@ const craftmetals = [
     { map_location: [2263.452127418683, 2816.442462855763], label: "Below Clawline", key: "Under_19b", type: "sceneData", id: "tool_metal_deposit" },
     { map_location: [2997.725777902886, 5064.24201110997], label: "Right of Pale Lake", key: "Aqueduct_05", type: "sceneData", id: "tool_metal_deposit" }
 ];
+const tool_pouches = [
+    {map_location: [1310.4075430101177, 3913], label: "Bought from Mort/Grindle", type: "pd_bool", key: "PurchasedPilgrimsRestToolPouch"},
+    {map_location: [1246.72306208417, 2343.5], label: "Loddie Game Reward", type: "pd_bool", key: "PurchasedBelltownToolPouch"},
+    {map_location: [1774.2551671194046, 3244], label: "Bugs of Pharloom Wish", type: "wish-map", key: "Journal"},
+    {map_location: [2998.7686705247825, 4739], label: "Move Caravan to Fleatopia", type: "caravan-fleatopia", key: "CaravanTroupeLocation"}
+]
+
+const crafting_kits = [
+    {map_location: [1049.1355655289162, 3065], type: "pd_bool", key: "PurchasedForgeToolKit"},
+    {map_location: [1769.721133026259, 3220.5], type: "wish", key: "Crow Feathers"},
+    {map_location: [2422.2605409235857, 2875.5], type: "pd_bool", key: "PurchasedArchitectToolKit"},
+    {map_location: [2298.250206684776, 889], type: "pd_bool", key: "purchasedGrindleToolKit"}
+]
+
 const abilities = [
     { key: "hasDash", type: "pd_bool", label: "Swift Step", img: "resources/abilities/swift_step.png" },
     { key: "hasBrolly", type: "pd_bool", label: "Drifter's Cloak", img: "resources/abilities/drifters_cloak.png" },
@@ -464,7 +478,26 @@ function update_value(details, obj) {
         }
     }
     else if (details["type"] == "moss_mother2") {
-
+        entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]);
+        if (entry["Record"]["Kills"] == 1 || entry["Record"]["Kills"] == 2) {
+            entry["Record"]["Kills"] += 2;
+            toggle_ui(obj.querySelector("img"), true);
+        }
+        else if (entry["Record"]["Kills"] == 3) {
+            entry["Record"]["Kills"] -= 2;
+            toggle_ui(obj.querySelector("img"), false);
+        }
+    }
+    else if (details["type"] == "moss_mother3") {
+        entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]);
+        if (entry["Record"]["Kills"] <= 2) {
+            entry["Record"]["Kills"] += 1;
+            toggle_ui(obj.querySelector("img"), true);
+        }
+        else {
+            entry["Record"]["Kills"] -= 1;
+            toggle_ui(obj.querySelector("img"), false);
+        }
     }
 }
 
@@ -781,6 +814,8 @@ function createMap() {
     create_markers(mask_shards, "resources/collectables/mask_icon.png");
     create_markers(spool_fragments, "resources/collectables/spool_icon.png");
     create_markers(craftmetals, "resources/collectables/craftmetal_icon.png")
+    create_markers(tool_pouches, "resources/collectables/tool_pouch_icon.png")
+    create_markers(crafting_kits, "resources/collectables/crafting_kit_icon.png")
     create_markers(fleas, "resources/collectables/flea_icon.png");
 
     document.querySelector(".map-smaller-button").classList.toggle("hide");
