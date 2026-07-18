@@ -573,8 +573,12 @@ function is_gotten(details) {
         return player_data[details["key"]] > 0;
     }
     else if (details["type"] == "quill") {
-        return player_data["hasQuill"];
-    } //fix quill
+        if (player_data["hasQuill"]) {
+            return player_data["QuillState"];
+        }
+
+        return 0;
+    }
     else if (details["type"] == "moss_mother2") {
         entry = player_data["EnemyJournalKillData"]["list"].find(item => item["Name"] == details["key"]);
         if (entry) {
@@ -690,7 +694,17 @@ function create_base_ui(tab) {
 
         div.appendChild(button);
 
-        toggle_ui(button.querySelector("img"), is_gotten(item));
+        if (item["type"] != "quill") toggle_ui(button.querySelector("img"), is_gotten(item));
+        else {
+            state = is_gotten(item);
+            img = button.querySelector("img");
+            if (state == 0) {
+                toggle_ui(img, false);
+                return;
+            }
+            toggle_ui(img, true);
+            img.src = "resources/items/quill" + player_data["QuillState"] + ".png";
+        }
     });
 }
 function create_wish_ui() {
