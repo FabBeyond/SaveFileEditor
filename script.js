@@ -866,8 +866,18 @@ function switch_wish_state(obj, state) {
 function createMap() {
     const ui = `
     <div id="map" class="map-container" style="width: 100%; height: 100%;">
-        <button class="map-fullscreen-button" onclick="expand_map()"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></i></button>
-        <button class="map-smaller-button" onclick="shrink_map()"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></i></button>
+        <button class="map-fullscreen-button size-button" onclick="expand_map()"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></i></button>
+        <button class="map-smaller-button size-button" onclick="shrink_map()"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></i></button>
+        <div class="map-bottom-left">
+            <button onclick='toggle_markers(this, "mask_shards")' class="on"><img src="resources/collectables/mask_icon.png">Mask Shards</button>
+            <button onclick='toggle_markers(this, "spool_fragments")' class="on"><img src="resources/collectables/spool_icon.png">Spool Fragments</button>
+            <button onclick='toggle_markers(this, "craftmetals")' class="on"><img src="resources/collectables/craftmetal_icon.png">Craftmetals</button>
+            <button onclick='toggle_markers(this, "tool_pouches")' class="on"><img src="resources/collectables/tool_pouch_icon.png">Tool Pouches</button>
+            <button onclick='toggle_markers(this, "crafting_kits")' class="on"><img src="resources/collectables/crafting_kit_icon.png">Crafting Kits</button>
+            <button onclick='toggle_markers(this, "bellways")' class="on"><img src="resources/collectables/bellway_icon.png">Bellways</button>
+            <button onclick='toggle_markers(this, "ventricas")' class="on"><img src="resources/collectables/ventrica_icon.png">Ventricas</button>
+            <button onclick='toggle_markers(this, "fleas")' class="on"><img src="resources/collectables/flea_icon.png">Fleas</button>
+        </div>
     </div>
     `;
 
@@ -885,19 +895,23 @@ function createMap() {
 
     map.on("click", e => console.log(e.latlng));
 
-    create_markers(mask_shards, "resources/collectables/mask_icon.png");
-    create_markers(spool_fragments, "resources/collectables/spool_icon.png");
-    create_markers(craftmetals, "resources/collectables/craftmetal_icon.png");
-    create_markers(tool_pouches, "resources/collectables/tool_pouch_icon.png");
-    create_markers(crafting_kits, "resources/collectables/crafting_kit_icon.png");
-    create_markers(bellways, "resources/collectables/bellway_icon.png");
-    create_markers(ventricas, "resources/collectables/ventrica_icon.png");
-    create_markers(fleas, "resources/collectables/flea_icon.png");
+    create_markers(mask_shards, "mask_shards", "resources/collectables/mask_icon.png");
+    create_markers(spool_fragments, "spool_fragments", "resources/collectables/spool_icon.png");
+    create_markers(craftmetals, "craftmetals", "resources/collectables/craftmetal_icon.png");
+    create_markers(tool_pouches, "tool_pouches", "resources/collectables/tool_pouch_icon.png");
+    create_markers(crafting_kits, "crafting_kits", "resources/collectables/crafting_kit_icon.png");
+    create_markers(bellways, "bellways", "resources/collectables/bellway_icon.png");
+    create_markers(ventricas, "ventricas", "resources/collectables/ventrica_icon.png");
+    create_markers(fleas, "fleas", "resources/collectables/flea_icon.png");
 
     document.querySelector(".map-smaller-button").classList.toggle("hide");
+
+    const controlDiv = document.querySelector('.map-bottom-left');
+    L.DomEvent.disableClickPropagation(controlDiv);
+    L.DomEvent.disableScrollPropagation(controlDiv);
 }
 
-function create_markers(list, icon_path) {
+function create_markers(list, list_name, icon_path) {
     const icon = L.divIcon({
         className: "marker grey",
         html: `<img class='dot' src='${icon_path}'>`,
@@ -927,6 +941,7 @@ function create_markers(list, icon_path) {
             marker.getElement().classList.toggle("grey");
         }
         marker.getElement().id = e["label"];
+        marker.getElement().alt = list_name;
     });
 }
 
@@ -954,6 +969,17 @@ function shrink_map() {
 
     document.querySelector(".map-fullscreen-button").classList.toggle("hide");
     document.querySelector(".map-smaller-button").classList.toggle("hide");
+}
+
+function toggle_markers(btn, group) {
+    btn.classList.toggle("on");
+    map.eachLayer(function(layer) {
+        if (layer instanceof L.Marker) {
+            if (layer.getElement().alt == group) {
+                layer.getElement().classList.toggle("hide");
+            }
+        }
+    });
 }
 //#endregion
 

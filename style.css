@@ -279,7 +279,7 @@ body {
     position: relative;
 }
 
-.map-container button {
+.size-button {
     cursor: pointer;
     position: absolute;
     top: 10px;
@@ -314,4 +314,42 @@ body {
 }
 .leaflet-popup-tip {
     background: none;
+}
+
+.map-bottom-left {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 9999;
+    background-color: #101418;
+    border: 2px solid #1c2024;
+    border-radius: 10px;
+    min-width: 160px;
+    height: 70%;
+    max-height: 300px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.map-bottom-left button {
+    cursor: pointer;
+    height: 15%;
+    background-color: #00000000;
+    border: 2px solid #1c2024;
+    width: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #c0bdbc;
+    font-family: "Roboto";
+    font-weight: bolder;
+}
+.map-bottom-left button.on {
+    background-color: #1c2024 !important;
+}
+
+.map-bottom-left img {
+    height: 80%;
 }
