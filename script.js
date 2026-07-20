@@ -94,12 +94,35 @@ const tool_pouches = [
     {map_location: [1246.72306208417, 2343.5], label: "Loddie Game Reward", type: "sceneData", key: "Bone_12", id: "Ladybug Craft Pickup"},
     {map_location: [1774.2551671194046, 3244], label: "Bugs of Pharloom Wish", type: "wish-map", key: "Journal"},
     {map_location: [2998.7686705247825, 4739], label: "Move Caravan to Fleatopia", type: "caravan-fleatopia", key: "CaravanTroupeLocation"}
-]
+];
 const crafting_kits = [
-    {map_location: [1049.1355655289162, 3065], type: "pd_bool", key: "PurchasedForgeToolKit"},
-    {map_location: [1769.721133026259, 3220.5], type: "wish", key: "Crow Feathers"},
-    {map_location: [2422.2605409235857, 2875.5], type: "pd_bool", key: "PurchasedArchitectToolKit"},
-    {map_location: [2298.250206684776, 889], type: "pd_bool", key: "purchasedGrindleToolKit"}
+    {map_location: [1049.1355655289162, 3065], label: "Bought from Forge Daughter", type: "pd_bool", key: "PurchasedForgeToolKit"},
+    {map_location: [1769.721133026259, 3220.5], label: "Crawbug Clearing Reward", type: "wish", key: "Crow Feathers"},
+    {map_location: [2422.2605409235857, 2875.5], label: "Bought from 12th Architect", type: "pd_bool", key: "PurchasedArchitectToolKit"},
+    {map_location: [2298.250206684776, 889], label: "Bought from Grindle", type: "pd_bool", key: "purchasedGrindleToolKit"}
+];
+const bellways = [
+    {map_location: [1133.706940671627, 1373.0184291452701], label: "Bone Bottom", type: "pd_bool", key: "defeatedBellBeast"},
+    {map_location: [1349.4734065587968, 1684.0597383870636], label: "The Marrow", type: "pd_bool", key: "defeatedBellBeast"},
+    {map_location: [1082.722924294319, 2757.535865103071], label: "Deep Docks", type: "pd_bool", key: "UnlockedDocksStation"},
+    {map_location: [1152.446675327743, 3936.1147683298263], label: "Far Fields", type: "pd_bool", key: "UnlockedBoneforestEastStation"},
+    {map_location: [1683.4858076453684, 3184.0845312890838], label: "Greymoor", type: "pd_bool", key: "UnlockedGreymoorStation"},
+    {map_location: [1617.4847053265619, 2426.0743787060605], label: "Bellhart", type: "pd_bool", key: "UnlockedBelltownStation"},
+    {map_location: [1814.5389945277745, 1556.0103732913497], label: "Shellwood", type: "pd_bool", key: "UnlockedShellwoodStation"},
+    {map_location: [2214.4121698219756, 1043.0204187713903], label: "Blasted Steps", type: "pd_bool", key: "UnlockedCoralTowerStation"},
+    {map_location: [2750.922997177119, 1416.0579056533702], label: "The Slab", type: "pd_bool", key: "UnlockedPeakStation"},
+    {map_location: [2258.410516343766, 3834.071181686506], label: "Bilewater", type: "pd_bool", key: "UnlockedShadowStation"},
+    {map_location: [3154.477757790953, 4163.077067241882], label: "Putrified Ducts", type: "pd_bool", key: "UnlockedAqueductStation"},
+    {map_location: [2681.4452393861657, 3152.0578656174685], label: "Grand Bellway", type: "pd_bool", key: "UnlockedCityStation"}
+];
+const ventricas = [
+    {map_location: [2672.2186528089446, 3199], type: "pd_bool", key: "UnlockedCityBellwayTube", label: "Grand Bellway"},
+    {map_location: [2686.7320184244713, 2051], type: "pd_bool", key: "UnlockedSongTube", label: "Choral Chambers"},
+    {map_location: [3099.7546159600015, 3291], type: "pd_bool", key: "UnlockedEnclaveTube", label: "First Shrine"},
+    {map_location: [3580.502893586867, 3007], type: "anyventrica", label: "Terminus", notoggle: true},
+    {map_location: [3119.395417503248, 2664], type: "pd_bool", key: "UnlockedHangTube", label: "High Halls"},
+    {map_location: [2335.7252667217826, 2684.5], type: "pd_bool", key: "UnlockedUnderTube", label: "Underworks"},
+    {map_location: [3310.469548442975, 2951], type: "pd_bool", key: "UnlockedArboriumTube", label: "Memorium"}
 ]
 
 const abilities = [
@@ -373,6 +396,12 @@ function update_value(details, obj) {
         if (obj != null) {
             toggle_ui(obj.querySelector("img"), player_data[details["key"]]);
         }
+        if (details["label"] == "Bone Bottom") {
+            document.getElementById("The Marrow").classList.toggle("grey", document.getElementById("Bone Bottom").classList.contains("grey"));
+        }
+        else if (details["label"] == "The Marrow") {
+            document.getElementById("Bone Bottom").classList.toggle("grey", document.getElementById("The Marrow").classList.contains("grey"));
+        }
     }
     else if (details["type"] == "collectable") {
         const collectable_data = {
@@ -602,6 +631,10 @@ function is_gotten(details) {
         else if (details["type"] == "caravan-fleatopia") {
             return player_data[details["key"]] == 3;
         }
+    }
+    else if (details["type"] == "anyventrica") {
+        return [player_data["UnlockedCityBellwayTube"], player_data["UnlockedSongTube"], player_data["UnlockedEnclaveTube"], player_data["UnlockedHangTube"],
+        player_data["UnlockedUnderTube"], player_data["UnlockedArboriumTube"]].includes(true);
     }
 }
 //#endregion
@@ -854,9 +887,11 @@ function createMap() {
 
     create_markers(mask_shards, "resources/collectables/mask_icon.png");
     create_markers(spool_fragments, "resources/collectables/spool_icon.png");
-    create_markers(craftmetals, "resources/collectables/craftmetal_icon.png")
-    create_markers(tool_pouches, "resources/collectables/tool_pouch_icon.png")
-    create_markers(crafting_kits, "resources/collectables/crafting_kit_icon.png")
+    create_markers(craftmetals, "resources/collectables/craftmetal_icon.png");
+    create_markers(tool_pouches, "resources/collectables/tool_pouch_icon.png");
+    create_markers(crafting_kits, "resources/collectables/crafting_kit_icon.png");
+    create_markers(bellways, "resources/collectables/bellway_icon.png");
+    create_markers(ventricas, "resources/collectables/ventrica_icon.png");
     create_markers(fleas, "resources/collectables/flea_icon.png");
 
     document.querySelector(".map-smaller-button").classList.toggle("hide");
@@ -882,8 +917,10 @@ function create_markers(list, icon_path) {
         marker.off("click")
         marker.on("click", (e2) => {
             L.DomEvent.stopPropagation(e2);
-            marker.getElement().classList.toggle("grey");
-            update_value(e);
+            if (e["notoggle"] != true) {
+                marker.getElement().classList.toggle("grey");
+                update_value(e);
+            }
         });
 
         if (is_gotten(e)) {
